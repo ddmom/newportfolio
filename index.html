@@ -45,6 +45,7 @@
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; display: block; }
 
+    /* 고급스러운 미세 아날로그 노이즈 텍스처 효과 */
     .noise {
       position: fixed;
       inset: 0;
@@ -214,7 +215,7 @@
       border-radius: 26px;
       background-image: 
         linear-gradient(135deg, rgba(8, 5, 20, 0.35), rgba(8, 5, 20, 0.7)), 
-        url('image1.png');
+        url('profile_image.png');
       background-size: cover;
       background-position: center;
     }
@@ -364,7 +365,6 @@
       transition: .28s ease;
     }
 
-    /* 일반 서브 카드 높이 제어 */
     .project .project-top {
       min-height: 220px;
       padding: 26px;
@@ -374,32 +374,29 @@
       background-position: center;
     }
 
-    /* =======================================================
-      ★ 코딩 박사님의 긴급 보정: 메인 프로젝트 대형 배너 최적화
-      =======================================================
-    */
     .project.featured { 
       grid-column: span 12; 
-      min-height: 580px; /* 전체 카드 높이 대폭 확장 */
+      min-height: 580px;
     }
 
     .project.featured .project-top {
-      min-height: 380px; /* ★ 이미지 영역 높이를 380px로 대폭 키워 시원하게 노출 */
-      background-size: cover; /* 영역에 맞게 이미지 자동 꽉 채움 */
-      background-position: center 30%; /* 이미지의 중심점을 살짝 위로 올려 중요 파트 강조 */
+      min-height: 380px;
+      background-size: cover;
+      background-position: center 30%;
     }
 
+    /* 각 프로젝트별 배경 이미지 매칭 및 가시성 확보용 딤드 오버레이 설정 */
     .p-main { 
       background-image: linear-gradient(135deg, rgba(8, 5, 20, 0.2), rgba(8, 5, 20, 0.6)), 
       url('image2.png'); 
     }
     .p-ux { 
-      background-image: linear-gradient(135deg, rgba(8, 5, 20, 0.4), rgba(8, 5, 20, 0.7)), 
-      url('image3.png'); 
+      background-image: linear-gradient(135deg, rgba(8, 5, 20, 0.15), rgba(8, 5, 20, 0.45)), 
+      url('starbucks_ux.png'); 
     }
     .p-brand { 
-      background-image: linear-gradient(135deg, rgba(8, 5, 20, 0.4), rgba(8, 5, 20, 0.7)), 
-      url('image4.png'); 
+      background-image: linear-gradient(135deg, rgba(8, 5, 20, 0.15), rgba(8, 5, 20, 0.45)), 
+      url('airbnb_relink.png'); 
     }
     .p-edu { 
       background-image: linear-gradient(135deg, rgba(8, 5, 20, 0.5), rgba(8, 5, 20, 0.8)), 
@@ -490,7 +487,7 @@
       font-size: 14px;
     }
 
-    /* 극적 팝업 인터랙션 세팅 */
+    /* ScrollMagic 연동용 자연스러운 3D 로테이션 등장 페이드 CSS */
     .fade-el {
       opacity: 0;
       transform: translateY(120px) scale(0.75) rotateX(-25deg);
@@ -504,6 +501,7 @@
       transform: translateY(0) scale(1) rotateX(0deg);
     }
 
+    /* 반응형 모바일 브레이크포인트 설계 */
     @media (max-width: 900px) {
       .nav { align-items: flex-start; }
       .nav-links { display: none; }
@@ -650,32 +648,32 @@
 
         <article class="project fade-el">
           <div class="project-top p-ux">
-            <span class="label">UI/UX</span>
+            <span class="label">UI/UX REDESIGN</span>
           </div>
           <div class="project-body">
-            <h3>액티브 시니어 플랫폼 리디자인</h3>
+            <h3>스타벅스 앱 시니어 친화 UI/UX 리디자인</h3>
             <p>
-              50~70대 사용자를 고려해 큰 글자, 명확한 버튼, 높은 명도 대비,
-              쉬운 정보 흐름을 적용한 서비스 화면 기획 프로젝트입니다.
+              액티브 시니어를 위해 기존 스타벅스 앱 구조를 '커피 매거진' 스타일 아카이브로 전환하고,
+              높은 명도 대비와 큼직한 타이포그래피, 직관적인 정보 흐름을 구현한 모바일 인터페이스 디자인입니다.
             </p>
             <div class="tags">
-              <span class="tag">접근성</span><span class="tag">가독성</span><span class="tag">서비스기획</span>
+              <span class="tag">Figma</span><span class="tag">접근성</span><span class="tag">시니어UX</span>
             </div>
           </div>
         </article>
 
         <article class="project fade-el">
           <div class="project-top p-brand">
-            <span class="label">BRANDING</span>
+            <span class="label">SERVICE PLANNING</span>
           </div>
           <div class="project-body">
-            <h3>디지털 채널 브랜딩 & 영상 템플릿</h3>
+            <h3>에어비앤비 Re:Link 커뮤니티 상생 생태계 기획</h3>
             <p>
-              음악, 사연, AI 이미지, 카드뉴스를 연결해 유튜브와 SNS에 활용 가능한
-              감성형 콘텐츠 브랜드 시스템을 설계했습니다.
+              시니어 노래 교실 허브와 지역 관광, 로컬 커뮤니티 스토리텔링을 긴밀하게 연결하여
+              공유 숙박 호스트와 현지 주민 간의 갈등을 해소하고 선순환 상생을 이끄는 서비스 모델 기획안입니다.
             </p>
             <div class="tags">
-              <span class="tag">유튜브</span><span class="tag">카드뉴스</span><span class="tag">모션기획</span>
+              <span class="tag">서비스기획</span><span class="tag">로컬브랜딩</span><span class="tag">지역상생</span>
             </div>
           </div>
         </article>
@@ -761,6 +759,7 @@
   </footer>
 
   <script>
+    // 스크롤 트래킹 기반 시각적 요소를 부드럽고 유기적이게 제어하는 순수 자바스크립트 스크립트
     document.addEventListener("DOMContentLoaded", function() {
       const controller = new ScrollMagic.Controller();
       const fadeElements = document.querySelectorAll('.fade-el');
