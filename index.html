@@ -1,779 +1,1154 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DDMAM Portfolio | AI Creative Designer</title>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DDMAM Portfolio</title>
 
-  <style>
-    :root {
-      --bg: #080514;
-      --bg-soft: #110b25;
-      --card: rgba(255,255,255,0.065);
-      --card-strong: rgba(255,255,255,0.105);
-      --text: #fffaf0;
-      --muted: #c7badf;
-      --gold: #f5d47f;
-      --amber: #ff9f43;
-      --coral: #ff6f61;
-      --purple: #7c5cff;
-      --line: rgba(245,212,127,0.18);
-      --shadow: 0 28px 80px rgba(0,0,0,0.35);
-      --radius: 26px;
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:#070015;
+  font-family:'Pretendard','Noto Sans KR',sans-serif;
+  color:white;
+  overflow-x:hidden;
+}
+
+/* 고정 내비바 */
+.header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:74px;
+  z-index:999;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 7%;
+    background:rgba(5,0,20,0.005);
+
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:20px;
+  font-weight:900;
+}
+
+.logo a{
+  color:white;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo-icon{
+  width:40px;
+  height:40px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#ffd66b,#ff9f3f);
+  color:#16001f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+}
+
+.nav{
+  display:flex;
+  gap:34px;
+}
+
+.nav a{
+  color:#eadfff;
+  text-decoration:none;
+  font-size:15px;
+  font-weight:800;
+}
+
+.nav a:hover{
+  color:#ffd76d;
+}
+
+/* 섹션 공통 */
+section{
+  min-height:100vh;
+  scroll-margin-top:74px;
+}
+
+/* 첫 화면 */
+.hero{
+  width:100%;
+  height:100vh;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  background:
+    linear-gradient(rgba(5,0,20,0.15), rgba(5,0,20,0.5)),
+    url("./images/silhouette.png");
+
+  background-size:cover;
+  background-position:center;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle, rgba(255,205,110,0.08), rgba(8,0,25,0.62));
+  z-index:1;
+}
+
+.universe{
+  width:650px;
+  height:650px;
+  position:relative;
+  z-index:5;
+}
+
+.orbit-line{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:560px;
+  height:560px;
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(255,215,120,0.38);
+  border-radius:50%;
+  box-shadow:0 0 25px rgba(255,190,80,0.25);
+}
+
+.orbit-line.small{
+  width:430px;
+  height:430px;
+  opacity:.45;
+}
+
+.icons-layer{
+  position:absolute;
+  inset:0;
+  animation:spin 180s linear infinite;
+}
+
+
+
+.icon-item{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:82px;
+  height:82px;
+  margin:-41px;
+  transform:rotate(var(--angle)) translate(280px) rotate(calc(-1 * var(--angle)));
+}
+
+.icon-box{
+  width:82px;
+  height:82px;
+  border-radius:25px;
+  background:rgba(16,8,44,0.78);
+  border:1px solid rgba(255,220,140,0.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 25px rgba(255,198,90,0.4);
+  animation:counterSpin 180s linear infinite;
+}
+
+.icon-box img{
+  width:42px;
+  height:42px;
+}
+
+/* 제목 클릭 */
+.caption{
+  position:absolute;
+  bottom:70px;
+  width:100%;
+  text-align:center;
+  z-index:10;
+}
+
+.caption a{
+  text-decoration:none;
+}
+
+.caption h1{
+  font-size:42px;
+  color:#ffcf70;
+  margin-bottom:10px;
+}
+
+.caption p{
+  font-size:17px;
+  color:#eee3ff;
+}
+
+/* 아래 섹션 */
+.content-section{
+  padding:120px 8%;
+  background:linear-gradient(180deg,#070015,#15072d);
+}
+
+.content-section h2{
+  font-size:46px;
+  color:#ffcf70;
+  margin-bottom:30px;
+}
+
+.content-section p{
+  font-size:20px;
+  line-height:1.8;
+  color:#eee3ff;
+}
+
+
+/* 프로젝트 */
+.project-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+  margin-top:40px;
+}
+
+.card{
+  min-height:220px;
+  padding:30px;
+  border-radius:28px;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+}
+
+.card h3{
+  color:#ffcf70;
+  margin-bottom:12px;
+}
+
+/* 애니메이션 */
+@keyframes spin{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
+}
+
+@keyframes counterSpin{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(-360deg); }
+}
+
+@media(max-width:768px){
+  .nav{
+    display:none;
+  }
+
+  .universe{
+    transform:scale(.7);
+  }
+
+  .caption h1{
+    font-size:28px;
+  }
+
+  .project-grid{
+    grid-template-columns:1fr;
+  }
+}
+.about-visual{
+  text-align:center;
+}
+
+.network-wrap{
+  width:800px;
+  height:520px;
+  max-width:100%;
+  margin:40px auto 30px;
+  position:relative;
+}
+
+.network-lines{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
+
+.network-lines line{
+  stroke:#ffd76d;
+  stroke-width:2;
+  stroke-linecap:round;
+  stroke-dasharray:8 14;
+  animation:flowLine 4s linear infinite;
+  filter:drop-shadow(0 0 8px rgba(255,215,109,.9));
+  opacity:.75;
+}
+
+.story-core{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:190px;
+  height:190px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle,#3b1b63,#130720 70%);
+  border:1px solid rgba(255,215,109,.65);
+  box-shadow:0 0 45px rgba(255,215,109,.35);
+  z-index:3;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  animation:corePulse 3.5s ease-in-out infinite;
+}
+
+.core-icon{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ffd66b,#ff9f3f);
+  color:#170020;
+  font-size:30px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:12px;
+}
+
+.story-core h3{
+  color:#ffcf70;
+  font-size:26px;
+  margin-bottom:6px;
+}
+
+.story-core p{
+  font-size:15px;
+  color:#eee3ff;
+}
+
+.node{
+  position:absolute;
+  width:130px;
+  height:130px;
+  border-radius:34px;
+  background:rgba(20,9,54,.82);
+  border:1px solid rgba(255,215,109,.55);
+  box-shadow:0 0 28px rgba(255,198,90,.3);
+  z-index:4;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  cursor:pointer;
+  transition:.35s ease;
+  animation:floatNode 5s ease-in-out infinite;
+}
+
+.node span{
+  font-size:34px;
+}
+
+.node strong{
+  color:#ffcf70;
+  font-size:18px;
+}
+
+.node:hover{
+  transform:scale(1.12);
+  background:rgba(45,20,95,.95);
+  box-shadow:0 0 45px rgba(255,215,109,.65);
+}
+
+.node-ai{
+  left:50%;
+  top:0;
+  transform:translateX(-50%);
+}
+
+.node-music{
+  left:7%;
+  top:25%;
+  animation-delay:.4s;
+}
+
+.node-design{
+  right:7%;
+  top:25%;
+  animation-delay:.8s;
+}
+
+.node-video{
+  left:16%;
+  bottom:0;
+  animation-delay:1.2s;
+}
+
+.node-global{
+  right:16%;
+  bottom:0;
+  animation-delay:1.6s;
+}
+
+.about-copy{
+  max-width:760px;
+  margin:0 auto;
+  font-size:20px;
+  line-height:1.8;
+  color:#eee3ff;
+}
+
+@keyframes flowLine{
+  from{
+    stroke-dashoffset:0;
+  }
+  to{
+    stroke-dashoffset:-44;
+  }
+}
+
+@keyframes corePulse{
+  0%,100%{
+    transform:translate(-50%,-50%) scale(1);
+    box-shadow:0 0 35px rgba(255,215,109,.28);
+  }
+  50%{
+    transform:translate(-50%,-50%) scale(1.04);
+    box-shadow:0 0 70px rgba(255,215,109,.55);
+  }
+}
+
+@keyframes floatNode{
+  0%,100%{
+    margin-top:0;
+  }
+  50%{
+    margin-top:-14px;
+  }
+}
+
+@media(max-width:768px){
+  .network-wrap{
+    height:680px;
+  }
+
+  .network-lines{
+    display:none;
+  }
+
+  .story-core{
+    top:48%;
+    width:160px;
+    height:160px;
+  }
+
+  .node{
+    width:112px;
+    height:112px;
+  }
+
+  .node-ai{
+    top:0;
+  }
+
+  .node-music{
+    left:5%;
+    top:22%;
+  }
+
+  .node-design{
+    right:5%;
+    top:22%;
+  }
+
+  .node-video{
+    left:8%;
+    bottom:5%;
+  }
+
+  .node-global{
+    right:8%;
+    bottom:5%;
+  }
+}
+/* Projects 원형 고정 메뉴 */
+
+.project-orbit-section{
+  text-align:center;
+  overflow:hidden;
+}
+
+.project-orbit-wrap{
+  width:620px;
+  height:620px;
+  max-width:100%;
+  margin:70px auto 0;
+  position:relative;
+}
+
+.project-orbit-wrap::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:460px;
+  height:460px;
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(255,207,112,.35);
+  border-radius:50%;
+  box-shadow:0 0 35px rgba(255,207,112,.18);
+}
+
+.project-center{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:190px;
+  height:190px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle,#3b1b63,#12051f 70%);
+  border:1px solid rgba(255,207,112,.65);
+  box-shadow:0 0 55px rgba(255,207,112,.35);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  z-index:5;
+}
+
+.project-center h3{
+  color:#ffcf70;
+  font-size:27px;
+  line-height:1.2;
+}
+
+.project-center p{
+  margin-top:12px;
+  font-size:14px;
+  color:#eee3ff;
+}
+
+.project-orbit{
+  position:absolute;
+  inset:0;
+}
+
+.project-planet{
+  position:absolute;
+  width:130px;
+  height:130px;
+  border-radius:32px;
+  text-decoration:none;
+  color:white;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,207,112,.5);
+  box-shadow:0 0 28px rgba(255,207,112,.25);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  transition:.35s ease;
+}
+
+.project-planet span{
+  font-size:32px;
+}
+
+.project-planet strong{
+  color:#ffcf70;
+  font-size:16px;
+}
+
+/* 카드 위치 */
+.planet-1{
+  left:50%;
+  top:20px;
+  transform:translateX(-50%);
+}
+
+.planet-2{
+  right:40px;
+  top:135px;
+}
+
+.planet-3{
+  right:75px;
+  bottom:80px;
+}
+
+.planet-4{
+  left:50%;
+  bottom:20px;
+  transform:translateX(-50%);
+}
+
+.planet-5{
+  left:75px;
+  bottom:80px;
+}
+
+.planet-6{
+  left:40px;
+  top:135px;
+}
+
+/* 마우스 올렸을 때 */
+.project-planet:hover{
+  background:rgba(255,255,255,.14);
+  box-shadow:0 0 48px rgba(255,207,112,.55);
+}
+
+.planet-1:hover,
+.planet-4:hover{
+  transform:translateX(-50%) scale(1.12);
+}
+
+.planet-2:hover,
+.planet-3:hover,
+.planet-5:hover,
+.planet-6:hover{
+  transform:scale(1.12);
+}
+
+/* 모바일 */
+@media(max-width:768px){
+  .project-orbit-wrap{
+    width:520px;
+    height:520px;
+    transform:scale(.82);
+    transform-origin:top center;
+  }
+
+  .project-orbit-wrap::before{
+    width:390px;
+    height:390px;
+  }
+
+  .project-planet{
+    width:115px;
+    height:115px;
+  }
+
+  .planet-1{
+    top:15px;
+  }
+
+  .planet-2{
+    right:30px;
+    top:115px;
+  }
+
+  .planet-3{
+    right:55px;
+    bottom:65px;
+  }
+
+  .planet-4{
+    bottom:15px;
+  }
+
+  .planet-5{
+    left:55px;
+    bottom:65px;
+  }
+
+  .planet-6{
+    left:30px;
+    top:115px;
+  }
+}
+.workflow-section{
+  text-align:center;
+}
+
+.workflow-line{
+  margin:70px auto 0;
+  max-width:1180px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  flex-wrap:nowrap;
+}
+
+.workflow-step{
+  width:190px;
+  min-height:210px;
+  padding:28px 18px;
+  border-radius:30px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,207,112,.35);
+  box-shadow:0 0 28px rgba(255,207,112,.16);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transition:.35s ease;
+}
+
+.workflow-step:hover{
+  transform:translateY(-10px);
+  background:rgba(255,255,255,.12);
+  box-shadow:0 0 45px rgba(255,207,112,.35);
+}
+
+.step-icon{
+  width:62px;
+  height:62px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#ffd66b,#ff9f3f);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  margin-bottom:18px;
+  box-shadow:0 0 28px rgba(255,207,112,.55);
+}
+
+.workflow-step h3{
+  color:#ffcf70;
+  font-size:20px;
+  margin-bottom:10px;
+}
+
+.workflow-step p{
+  color:#eee3ff;
+  font-size:15px;
+  line-height:1.6;
+}
+
+.workflow-arrow{
+  color:#ffcf70;
+  font-size:34px;
+  font-weight:900;
+  text-shadow:0 0 18px rgba(255,207,112,.8);
+  animation:arrowGlow 1.8s ease-in-out infinite;
+}
+
+@keyframes arrowGlow{
+  0%,100%{
+    opacity:.45;
+    transform:translateX(0);
+  }
+  50%{
+    opacity:1;
+    transform:translateX(6px);
+  }
+}
+
+@media(max-width:900px){
+  .workflow-line{
+    flex-direction:column;
+  }
+
+  .workflow-arrow{
+    transform:rotate(90deg);
+  }
+
+  @keyframes arrowGlow{
+    0%,100%{
+      opacity:.45;
+      transform:rotate(90deg) translateX(0);
     }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      font-family: Pretendard, "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 12% 12%, rgba(124,92,255,.28), transparent 32%),
-        radial-gradient(circle at 88% 18%, rgba(255,159,67,.19), transparent 28%),
-        linear-gradient(180deg, #080514 0%, #10091f 50%, #080514 100%);
-      line-height: 1.75;
-      overflow-x: hidden;
-      perspective: 1000px;
+    50%{
+      opacity:1;
+      transform:rotate(90deg) translateX(6px);
     }
+  }
+}
+.contact-section{
+  text-align:center;
+}
 
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
+.contact-station{
+  max-width:1000px;
+  margin:60px auto 0;
+}
 
-    /* 고급스러운 미세 아날로그 노이즈 텍스처 효과 */
-    .noise {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .08;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-      z-index: 1;
-    }
+.station-core{
+  width:260px;
+  height:260px;
+  margin:0 auto 60px;
+  border-radius:50%;
+  background:radial-gradient(circle,#3b1b63,#12051f 70%);
+  border:1px solid rgba(255,207,112,.65);
+  box-shadow:0 0 60px rgba(255,207,112,.35);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  animation:stationPulse 4s ease-in-out infinite;
+}
 
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 20;
-      backdrop-filter: blur(18px);
-      background: rgba(8,5,20,.72);
-      border-bottom: 1px solid var(--line);
-    }
+.station-icon{
+  font-size:50px;
+  margin-bottom:15px;
+}
 
-    .nav {
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 16px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
+.station-core h3{
+  color:#ffcf70;
+  font-size:30px;
+  margin-bottom:10px;
+}
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 900;
-      letter-spacing: -.02em;
-    }
+.station-core p{
+  color:#eee3ff;
+  font-size:15px;
+  line-height:1.6;
+  max-width:180px;
+}
 
-    .brand-mark {
-      width: 38px;
-      height: 38px;
-      display: grid;
-      place-items: center;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--gold), var(--amber));
-      color: #1b102f;
-      box-shadow: 0 10px 30px rgba(255,159,67,.24);
-    }
+.contact-links{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+}
 
-    .nav-links {
-      display: flex;
-      gap: 22px;
-      color: var(--muted);
-      font-size: 15px;
-      font-weight: 700;
-    }
+.contact-card{
+  width:240px;
+  min-height:220px;
+  border-radius:30px;
+  text-decoration:none;
+  color:white;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,207,112,.35);
+  box-shadow:0 0 25px rgba(255,207,112,.18);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transition:.35s ease;
+}
 
-    .nav-links a:hover { color: var(--gold); }
+.contact-card span{
+  font-size:42px;
+  margin-bottom:18px;
+}
 
-    .wrap {
-      position: relative;
-      z-index: 2;
-      max-width: 1180px;
-      margin: 0 auto;
-      padding: 0 22px;
-    }
+.contact-card h4{
+  color:#ffcf70;
+  font-size:22px;
+  margin-bottom:10px;
+}
 
-    section { padding: 92px 0; }
-    #home { padding-top: 158px; min-height: 92vh; display: grid; align-items: center; }
+.contact-card p{
+  color:#eee3ff;
+  font-size:15px;
+}
 
-    .hero {
-      display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 54px;
-      align-items: center;
-    }
+.contact-card:hover{
+  transform:translateY(-10px);
+  background:rgba(255,255,255,.12);
+  box-shadow:0 0 45px rgba(255,207,112,.45);
+}
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(255,255,255,.055);
-      color: var(--gold);
-      font-size: 14px;
-      font-weight: 800;
-      margin-bottom: 22px;
-    }
+@keyframes stationPulse{
+  0%,100%{
+    transform:scale(1);
+    box-shadow:0 0 45px rgba(255,207,112,.25);
+  }
 
-    h1 {
-      margin: 0;
-      font-size: clamp(42px, 6vw, 76px);
-      line-height: 1.12;
-      letter-spacing: -.055em;
-      word-break: keep-all;
-    }
+  50%{
+    transform:scale(1.04);
+    box-shadow:0 0 75px rgba(255,207,112,.55);
+  }
+}
 
-    .grad {
-      background: linear-gradient(90deg, var(--gold), var(--amber), #ffd8b0);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
+@media(max-width:768px){
 
-    .lead {
-      max-width: 760px;
-      margin: 26px 0 34px;
-      color: var(--muted);
-      font-size: clamp(18px, 2vw, 22px);
-      word-break: keep-all;
-    }
+  .station-core{
+    width:220px;
+    height:220px;
+  }
 
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 34px;
-    }
+  .contact-card{
+    width:100%;
+    max-width:320px;
+  }
+}
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 12px 20px;
-      border-radius: 999px;
-      font-weight: 900;
-      border: 1px solid var(--line);
-      transition: .25s ease;
-    }
-
-    .btn.primary {
-      color: #1b102f;
-      background: linear-gradient(135deg, var(--gold), var(--amber));
-      box-shadow: 0 18px 40px rgba(255,159,67,.22);
-    }
-
-    .btn.secondary {
-      color: var(--gold);
-      background: rgba(255,255,255,.055);
-    }
-
-    .btn:hover { transform: translateY(-3px); }
-
-    .hero-card {
-      position: relative;
-      min-height: 480px;
-      padding: 28px;
-      border: 1px solid var(--line);
-      border-radius: 34px;
-      background:
-        linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.035)),
-        radial-gradient(circle at 80% 20%, rgba(245,212,127,.18), transparent 36%);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .profile-visual {
-      height: 100%;
-      min-height: 424px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      border: 1px dashed rgba(245,212,127,.32);
-      border-radius: 26px;
-      background-image: 
-        linear-gradient(135deg, rgba(8, 5, 20, 0.35), rgba(8, 5, 20, 0.7)), 
-        url('profile_image.png');
-      background-size: cover;
-      background-position: center;
-    }
-
-    .profile-visual strong {
-      display: block;
-      margin-top: 12px;
-      color: var(--gold);
-      font-size: 24px;
-    }
-
-    .profile-visual p {
-      margin: 8px auto 0;
-      max-width: 280px;
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      max-width: 660px;
-    }
-
-    .stat {
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: rgba(255,255,255,.055);
-    }
-
-    .stat b { display: block; color: var(--gold); font-size: 24px; line-height: 1; }
-    .stat span { color: var(--muted); font-size: 13px; }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 20px;
-      margin-bottom: 34px;
-    }
-
-    .eyebrow {
-      color: var(--amber);
-      font-weight: 900;
-      letter-spacing: .12em;
-      font-size: 13px;
-      text-transform: uppercase;
-    }
-
-    h2 {
-      margin: 8px 0 0;
-      font-size: clamp(30px, 4vw, 46px);
-      line-height: 1.18;
-      letter-spacing: -.035em;
-      word-break: keep-all;
-    }
-
-    .section-desc {
-      max-width: 520px;
-      color: var(--muted);
-      margin: 0;
-      word-break: keep-all;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: .9fr 1.1fr;
-      gap: 24px;
-    }
-
-    .panel {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--card);
-      box-shadow: var(--shadow);
-      padding: 30px;
-    }
-
-    .panel h3 { margin: 0 0 12px; font-size: 24px; }
-    .panel p { color: var(--muted) !important; margin: 0; word-break: keep-all; }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 22px;
-    }
-
-    .tag {
-      padding: 7px 12px;
-      border-radius: 999px;
-      color: var(--gold);
-      background: rgba(245,212,127,.08);
-      border: 1px solid rgba(245,212,127,.14);
-      font-size: 13px;
-      font-weight: 800;
-    }
-
-    .skill-list {
-      display: grid;
-      gap: 14px;
-      margin-top: 20px;
-    }
-
-    .skill {
-      display: grid;
-      grid-template-columns: 130px 1fr;
-      gap: 14px;
-      align-items: center;
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .bar {
-      height: 10px;
-      border-radius: 999px;
-      overflow: hidden;
-      background: rgba(255,255,255,.08);
-    }
-
-    .bar span {
-      display: block;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--gold), var(--amber), var(--coral));
-    }
-
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 22px;
-    }
-
-    .project {
-      grid-column: span 6;
-      min-height: 360px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border: 1px solid var(--line);
-      border-radius: 30px;
-      overflow: hidden;
-      background: var(--card);
-      box-shadow: var(--shadow);
-      transition: .28s ease;
-    }
-
-    .project .project-top {
-      min-height: 220px;
-      padding: 26px;
-      display: flex;
-      align-items: flex-end;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .project.featured { 
-      grid-column: span 12; 
-      min-height: 580px;
-    }
-
-    .project.featured .project-top {
-      min-height: 380px;
-      background-size: cover;
-      background-position: center 30%;
-    }
-
-    /* 각 프로젝트별 배경 이미지 매칭 및 가시성 확보용 딤드 오버레이 설정 */
-    .p-main { 
-      background-image: linear-gradient(135deg, rgba(8, 5, 20, 0.2), rgba(8, 5, 20, 0.6)), 
-      url('image2.png'); 
-    }
-    .p-ux { 
-      background-image: linear-gradient(135deg, rgba(8, 5, 20, 0.15), rgba(8, 5, 20, 0.45)), 
-      url('starbucks_ux.png'); 
-    }
-    .p-brand { 
-      background-image: linear-gradient(135deg, rgba(8, 5, 20, 0.15), rgba(8, 5, 20, 0.45)), 
-      url('airbnb_relink.png'); 
-    }
-    .p-edu { 
-      background-image: linear-gradient(135deg, rgba(8, 5, 20, 0.5), rgba(8, 5, 20, 0.8)), 
-      url('image5.png'); 
-    }
-    .p-art { 
-      background-image: linear-gradient(135deg, rgba(8, 5, 20, 0.5), rgba(8, 5, 20, 0.8)), 
-      url('image6.png'); 
-    }
-
-    .project-top .label {
-      color: #1b102f;
-      background: linear-gradient(135deg, var(--gold), var(--amber));
-      padding: 8px 13px;
-      border-radius: 999px;
-      font-size: 13px;
-      font-weight: 900;
-    }
-
-    .project-body { padding: 32px; }
-    .project h3 { margin: 0 0 12px; font-size: 26px; letter-spacing: -.02em; }
-    .project p { margin: 0 0 24px; color: var(--muted); word-break: keep-all; }
-
-    .mini-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .mini {
-      padding: 14px 10px;
-      border-radius: 15px;
-      border: 1px solid rgba(245,212,127,.18);
-      background: rgba(255,255,255,.045);
-      color: var(--gold);
-      text-align: center;
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .process {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .step {
-      padding: 24px;
-      border-radius: 24px;
-      background: rgba(255,255,255,.055);
-      border: 1px solid var(--line);
-    }
-
-    .step b {
-      display: inline-grid;
-      place-items: center;
-      width: 38px;
-      height: 38px;
-      border-radius: 14px;
-      background: rgba(245,212,127,.13);
-      color: var(--gold);
-      margin-bottom: 16px;
-    }
-
-    .step h3 { margin: 0 0 8px; font-size: 18px; }
-    .step p { margin: 0; color: var(--muted); font-size: 14px; word-break: keep-all; }
-
-    .contact {
-      text-align: center;
-      padding: 58px;
-      border: 1px solid var(--line);
-      border-radius: 34px;
-      background:
-        radial-gradient(circle at 50% 0%, rgba(245,212,127,.16), transparent 34%),
-        rgba(255,255,255,.06);
-      box-shadow: var(--shadow);
-    }
-
-    .contact p { max-width: 640px; margin: 16px auto 28px; color: var(--muted); }
-
-    footer {
-      position: relative;
-      z-index: 2;
-      padding: 42px 22px;
-      text-align: center;
-      color: var(--muted);
-      border-top: 1px solid rgba(255,255,255,.08);
-      font-size: 14px;
-    }
-
-    /* ScrollMagic 연동용 자연스러운 3D 로테이션 등장 페이드 CSS */
-    .fade-el {
-      opacity: 0;
-      transform: translateY(120px) scale(0.75) rotateX(-25deg);
-      transform-origin: center bottom;
-      transition: opacity 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                  transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    
-    .fade-el.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1) rotateX(0deg);
-    }
-
-    /* 반응형 모바일 브레이크포인트 설계 */
-    @media (max-width: 900px) {
-      .nav { align-items: flex-start; }
-      .nav-links { display: none; }
-      .hero, .about-grid { grid-template-columns: 1fr; }
-      .hero-card { min-height: 340px; }
-      .profile-visual { min-height: 300px; }
-      .stats, .process { grid-template-columns: 1fr 1fr; }
-      .project, .project.featured { grid-column: span 12; }
-      .project.featured .project-top { min-height: 260px; }
-      .section-head { display: block; }
-      .section-desc { margin-top: 12px; }
-    }
-
-    @media (max-width: 560px) {
-      section { padding: 68px 0; }
-      #home { padding-top: 118px; }
-      .stats, .process, .mini-grid { grid-template-columns: 1fr; }
-      .skill { grid-template-columns: 1fr; }
-      .contact { padding: 34px 20px; }
-      .project-top { min-height: 140px; }
-      .project.featured .project-top { min-height: 180px; }
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <div class="noise"></div>
 
-  <header>
-    <nav class="nav" aria-label="주요 메뉴">
-      <a class="brand" href="#home" aria-label="홈으로 이동">
-        <span class="brand-mark">D</span>
-        <span>DDMAM PORTFOLIO</span>
+<header class="header">
+  <div class="logo">
+    <a href="#home">
+      <div class="logo-icon">D</div>
+      <div>DDMAM PORTFOLIO</div>
+    </a>
+  </div>
+
+  <nav class="nav">
+    <a href="#about">about me</a>
+    <a href="#projects">projects</a>
+    <a href="#workflow">workflow</a>
+    <a href="#contact">contact</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+
+  <div class="universe">
+    <div class="orbit-line"></div>
+    <div class="orbit-line small"></div>
+
+    <div class="icons-layer">
+      <div class="icon-item" style="--angle:0deg;">
+        <div class="icon-box">
+          <img src="https://api.iconify.design/mdi:brain.svg?color=%23ffd76d">
+        </div>
+      </div>
+
+      <div class="icon-item" style="--angle:60deg;">
+        <div class="icon-box">
+          <img src="https://api.iconify.design/mdi:microphone.svg?color=%23ffd76d">
+        </div>
+      </div>
+
+      <div class="icon-item" style="--angle:120deg;">
+        <div class="icon-box">
+          <img src="https://api.iconify.design/mdi:laptop.svg?color=%23ffd76d">
+        </div>
+      </div>
+
+      <div class="icon-item" style="--angle:180deg;">
+        <div class="icon-box">
+          <img src="https://api.iconify.design/mdi:pen.svg?color=%23ffd76d">
+        </div>
+      </div>
+
+      <div class="icon-item" style="--angle:240deg;">
+        <div class="icon-box">
+          <img src="https://api.iconify.design/mdi:earth.svg?color=%23ffd76d">
+        </div>
+      </div>
+
+      <div class="icon-item" style="--angle:300deg;">
+        <div class="icon-box">
+          <img src="https://api.iconify.design/mdi:play-circle.svg?color=%23ffd76d">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="caption">
+    <a href="#about">
+      <h1>DDMAM CREATIVE UNIVERSE</h1>
+      <p>AI · Music · Design · Global · Video · UX</p>
+    </a>
+  </div>
+
+</section>
+
+<section class="content-section" id="about">
+ <section class="content-section about-visual" id="about">
+  <h2>About Me</h2>
+
+  <div class="network-wrap">
+
+    <svg class="network-lines" viewBox="0 0 800 520">
+      <line x1="400" y1="260" x2="400" y2="70" />
+      <line x1="400" y1="260" x2="170" y2="180" />
+      <line x1="400" y1="260" x2="630" y2="180" />
+      <line x1="400" y1="260" x2="230" y2="420" />
+      <line x1="400" y1="260" x2="570" y2="420" />
+    </svg>
+
+    <div class="story-core">
+      <div class="core-icon">人</div>
+      <h3>Story</h3>
+      <p>사람의 이야기</p>
+    </div>
+
+    <div class="node node-ai">
+      <span>🤖</span>
+      <strong>AI</strong>
+    </div>
+
+    <div class="node node-music">
+      <span>🎤</span>
+      <strong>Music</strong>
+    </div>
+
+    <div class="node node-design">
+      <span>🎨</span>
+      <strong>Design</strong>
+    </div>
+
+    <div class="node node-video">
+      <span>▶️</span>
+      <strong>Video</strong>
+    </div>
+
+    <div class="node node-global">
+      <span>🌏</span>
+      <strong>Global</strong>
+    </div>
+
+  </div>
+
+  <p class="about-copy">
+    AI, 음악, 디자인, 영상, 다국어 콘텐츠를 연결해 사람의 이야기가 살아나는 디지털 콘텐츠를 만듭니다.
+  </p>
+</section>
+</section>
+
+<section class="content-section project-orbit-section" id="projects">
+  <h2>Projects</h2>
+
+  <div class="project-orbit-wrap">
+
+    <div class="project-center">
+      <h3>Featured<br>Projects</h3>
+      <p>Click the project</p>
+    </div>
+
+    <div class="project-orbit">
+
+      <a href="#" class="project-planet planet-1">
+        <span>☕</span>
+        <strong>Starbucks</strong>
       </a>
-      <div class="nav-links">
-        <a href="#about">소개</a>
-        <a href="#projects">프로젝트</a>
-        <a href="#process">작업방식</a>
-        <a href="#contact">연락</a>
-      </div>
-    </nav>
-  </header>
 
-  <main class="wrap">
-    <section id="home">
-      <div class="hero">
-        <div>
-          <div class="badge">AI Creative Designer · Content Planner · Active Senior UX</div>
-          <h1>디지털 기술로<br><span class="grad">감성과 경험</span>을<br>디자인합니다.</h1>
-          <p class="lead">
-            생성형 AI, 음악 영상, 다국어 교육 콘텐츠, 시니어 친화 UI/UX를 연결해
-            사람의 이야기가 살아나는 디지털 포트폴리오를 만듭니다.
-          </p>
-          <div class="actions">
-            <a class="btn primary" href="#projects">대표 프로젝트 보기</a>
-            <a class="btn secondary" href="#contact">협업 문의하기</a>
-          </div>
-          <div class="stats" aria-label="핵심 역량 요약">
-            <div class="stat"><b>AI</b><span>프롬프트·이미지·영상 기획</span></div>
-            <div class="stat"><b>UX</b><span>시니어 친화 인터페이스</span></div>
-            <div class="stat"><b>3Lang</b><span>한·영·일 콘텐츠 확장</span></div>
-          </div>
-        </div>
-        <aside class="hero-card" aria-label="대표 프로필 영역">
-          <div class="profile-visual">
-            <div>
-              <div style="font-size:72px;">🎬</div>
-              <strong>Profile Image Area</strong>
-              <p>우아하고 지적인 크리에이터의 아우라 이미지가 완벽하게 매칭되었습니다.</p>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
+      <a href="#" class="project-planet planet-2">
+        <span>🏠</span>
+        <strong>Airbnb</strong>
+      </a>
 
-    <section id="about">
-      <div class="section-head fade-el">
-        <div>
-          <div class="eyebrow">About Me</div>
-          <h2>경험을 콘텐츠로 바꾸는<br>융합형 크리에이터</h2>
-        </div>
-        <p class="section-desc">
-          기획·디자인·스토리텔링·AI 제작 도구를 함께 활용해
-          중장년 세대도 편하게 접근할 수 있는 감성적 디지털 경험을 설계합니다.
-        </p>
-      </div>
+      <a href="#" class="project-planet planet-3">
+        <span>🕶</span>
+        <strong>GoldenFit</strong>
+      </a>
 
-      <div class="about-grid">
-        <article class="panel fade-el">
-          <h3>디자인 방향</h3>
-          <p>
-            고대비 색상, 큰 타이포그래피, 명확한 정보 구조를 바탕으로
-            보기 쉽고 기억에 남는 포트폴리오와 콘텐츠 화면을 제작합니다.
-          </p>
-          <div class="tags">
-            <span class="tag">#AI콘텐츠기획</span>
-            <span class="tag">#시니어UX</span>
-            <span class="tag">#음악영상</span>
-            <span class="tag">#브랜딩</span>
-            <span class="tag">#다국어콘텐츠</span>
-          </div>
-        </article>
+      <a href="#" class="project-planet planet-4">
+        <span>🥗</span>
+        <strong>CoolFriends</strong>
+      </a>
 
-        <article class="panel fade-el">
-          <h3>핵심 역량</h3>
-          <div class="skill-list">
-            <div class="skill"><span>AI Prompt</span><div class="bar"><span style="width:92%"></span></div></div>
-            <div class="skill"><span>Content Plan</span><div class="bar"><span style="width:88%"></span></div></div>
-            <div class="skill"><span>UI/UX Concept</span><div class="bar"><span style="width:82%"></span></div></div>
-            <div class="skill"><span>Brand Story</span><div class="bar"><span style="width:86%"></span></div></div>
-          </div>
-        </article>
-      </div>
-    </section>
+      <a href="#" class="project-planet planet-5">
+        <span>🎵</span>
+        <strong>Music Video</strong>
+      </a>
 
-    <section id="projects">
-      <div class="section-head fade-el">
-        <div>
-          <div class="eyebrow">Featured Projects</div>
-          <h2>대표 프로젝트</h2>
-        </div>
-        <p class="section-desc">
-          단순 결과물 나열보다 “문제 → 기획 → 제작 → 확장 가능성”이 보이도록 구성했습니다.
-        </p>
-      </div>
+      <a href="#" class="project-planet planet-6">
+        <span>📺</span>
+        <strong>YouTube</strong>
+      </a>
 
-      <div class="project-grid">
-        <article class="project featured fade-el">
-          <div class="project-top p-main">
-            <span class="label">MAIN PROJECT</span>
-          </div>
-          <div class="project-body">
-            <h3>AI 기반 3개국어 음악 영상 & 교육 콘텐츠 아카이브</h3>
-            <p>
-              오리지널 곡을 중심으로 Suno AI 음악 제작, Midjourney 이미지 프롬프트,
-              가사 카드 디자인, 한·영·일 로컬라이징 강의안까지 연결한 콘텐츠 비즈니스 모델입니다.
-            </p>
-            <div class="mini-grid">
-              <div class="mini">🇰🇷 감성 뮤직비디오</div>
-              <div class="mini">🇺🇸 영어 학습 콘텐츠</div>
-              <div class="mini">🇯🇵 일본어 로컬라이징</div>
-            </div>
-          </div>
-        </article>
+    </div>
+  </div>
+</section>
 
-        <article class="project fade-el">
-          <div class="project-top p-ux">
-            <span class="label">UI/UX REDESIGN</span>
-          </div>
-          <div class="project-body">
-            <h3>스타벅스 앱 시니어 친화 UI/UX 리디자인</h3>
-            <p>
-              액티브 시니어를 위해 기존 스타벅스 앱 구조를 '커피 매거진' 스타일 아카이브로 전환하고,
-              높은 명도 대비와 큼직한 타이포그래피, 직관적인 정보 흐름을 구현한 모바일 인터페이스 디자인입니다.
-            </p>
-            <div class="tags">
-              <span class="tag">Figma</span><span class="tag">접근성</span><span class="tag">시니어UX</span>
-            </div>
-          </div>
-        </article>
+<section class="content-section workflow-section" id="workflow">
+  <h2>Workflow</h2>
 
-        <article class="project fade-el">
-          <div class="project-top p-brand">
-            <span class="label">SERVICE PLANNING</span>
-          </div>
-          <div class="project-body">
-            <h3>에어비앤비 Re:Link 커뮤니티 상생 생태계 기획</h3>
-            <p>
-              시니어 노래 교실 허브와 지역 관광, 로컬 커뮤니티 스토리텔링을 긴밀하게 연결하여
-              공유 숙박 호스트와 현지 주민 간의 갈등을 해소하고 선순환 상생을 이끄는 서비스 모델 기획안입니다.
-            </p>
-            <div class="tags">
-              <span class="tag">서비스기획</span><span class="tag">로컬브랜딩</span><span class="tag">지역상생</span>
-            </div>
-          </div>
-        </article>
+  <div class="workflow-line">
 
-        <article class="project fade-el">
-          <div class="project-top p-edu">
-            <span class="label">EDUCATION</span>
-          </div>
-          <div class="project-body">
-            <h3>영어·일본어 학습형 콘텐츠</h3>
-            <p>
-              노래 가사와 감정 서사를 활용해 단어, 문장, 발음, 회화 표현까지 확장하는
-              성인 학습자용 콘텐츠 구조를 기획했습니다.
-            </p>
-          </div>
-        </article>
+    <div class="workflow-step">
+      <div class="step-icon">📝</div>
+      <h3>기획</h3>
+      <p>아이디어와 방향 설정</p>
+    </div>
 
-        <article class="project fade-el">
-          <div class="project-top p-art">
-            <span class="label">AI ART</span>
-          </div>
-          <div class="project-body">
-            <h3>일관된 캐릭터 기반 영상 이미지 제작</h3>
-            <p>
-              동일 인물, 동일 분위기, 16:9 영상 화면비를 유지하는 프롬프트 시스템으로
-              유튜브용 장면 이미지를 안정적으로 제작합니다.
-            </p>
-          </div>
-        </article>
-      </div>
-    </section>
+    <div class="workflow-arrow">→</div>
 
-    <section id="process">
-      <div class="section-head fade-el">
-        <div>
-          <div class="eyebrow">Workflow</div>
-          <h2>작업 방식</h2>
-        </div>
-      </div>
+    <div class="workflow-step">
+      <div class="step-icon">🖼️</div>
+      <h3>이미지 생성</h3>
+      <p>AI 이미지와 비주얼 제작</p>
+    </div>
 
-      <div class="process">
-        <div class="step fade-el">
-          <b>01</b>
-          <h3>기획</h3>
-          <p>대상 사용자와 콘텐츠 목적을 정리하고 핵심 메시지를 뽑습니다.</p>
-        </div>
-        <div class="step fade-el">
-          <b>02</b>
-          <h3>비주얼 설계</h3>
-          <p>컬러, 타이포, 이미지 스타일, 화면 흐름을 통일합니다.</p>
-        </div>
-        <div class="step fade-el">
-          <b>03</b>
-          <h3>AI 제작</h3>
-          <p>프롬프트, 이미지, 음악, 영상 요소를 제작해 결과물을 만듭니다.</p>
-        </div>
-        <div class="step fade-el">
-          <b>04</b>
-          <h3>확장</h3>
-          <p>SNS, 유튜브, 강의안, 발표자료로 재가공할 수 있게 정리합니다.</p>
-        </div>
-      </div>
-    </section>
+    <div class="workflow-arrow">→</div>
 
-    <section id="contact" class="fade-el">
-      <div class="contact">
-        <div class="eyebrow">Contact</div>
-        <h2>감성 있는 AI 콘텐츠와<br>시니어 친화 디자인을 함께 만듭니다.</h2>
-        <p>
-          포트폴리오, 유튜브 콘텐츠, 음악 영상, 교육 자료, 브랜드 기획 협업을 위한
-          연락 영역입니다. 실제 사용 시 이메일 또는 SNS 링크를 연결하세요.
-        </p>
-        <div class="actions" style="justify-content:center; margin:0;">
-          <a class="btn primary" href="mailto:your-email@example.com">이메일 보내기</a>
-          <a class="btn secondary" href="#home">맨 위로</a>
-        </div>
-      </div>
-    </section>
-  </main>
+    <div class="workflow-step">
+      <div class="step-icon">🎬</div>
+      <h3>영상 구성</h3>
+      <p>장면 순서와 흐름 설계</p>
+    </div>
 
-  <footer>
-    © 2026 DDMAM Creative Portfolio. Designed with AI, Storytelling & Human Warmth.
-  </footer>
+    <div class="workflow-arrow">→</div>
 
-  <script>
-    // 스크롤 트래킹 기반 시각적 요소를 부드럽고 유기적이게 제어하는 순수 자바스크립트 스크립트
-    document.addEventListener("DOMContentLoaded", function() {
-      const controller = new ScrollMagic.Controller();
-      const fadeElements = document.querySelectorAll('.fade-el');
+    <div class="workflow-step">
+      <div class="step-icon">✂️</div>
+      <h3>자막/편집</h3>
+      <p>가사, 자막, 화면 편집</p>
+    </div>
 
-      fadeElements.forEach(function(element) {
-        new ScrollMagic.Scene({
-          triggerElement: element,
-          triggerHook: 0.80, 
-          reverse: false     
-        })
-        .setClassToggle(element, 'visible') 
-        .addTo(controller);
-      });
-    });
-  </script>
+    <div class="workflow-arrow">→</div>
+
+    <div class="workflow-step">
+      <div class="step-icon">🌐</div>
+      <h3>포트폴리오 적용</h3>
+      <p>웹사이트와 콘텐츠로 완성</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="content-section contact-section" id="contact">
+
+  <h2>Contact</h2>
+
+  <div class="contact-station">
+
+    <div class="station-core">
+      <div class="station-icon">🚀</div>
+      <h3>Let's Connect</h3>
+      <p>
+        새로운 프로젝트와 협업을 기다립니다.
+      </p>
+    </div>
+
+    <div class="contact-links">
+
+      <a href="jominyeongg@gmail.com" class="contact-card">
+        <span>📧</span>
+        <h4>Email</h4>
+        <p>jominyeongg@gmail.com</p>
+      </a>
+
+      <a href="https://youtube.com/@디디맘의노래선물" target="_blank" class="contact-card">
+        <span>📺</span>
+        <h4>YouTube</h4>
+        <p>Channel Visit</p>
+      </a>
+
+      <a href=" https://ddmom.github.io/newportfolio/" target="_blank" class="contact-card">
+        <span>💻</span>
+        <h4>Portfolio</h4>
+        <p>View Projects</p>
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
 </body>
 </html>
