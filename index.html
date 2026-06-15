@@ -22,6 +22,45 @@ body{
   color:white;
   overflow-x:hidden;
 }
+#droneCursor{
+  pointer-events:none;
+  z-index:999999;
+}
+*,
+*::before,
+*::after{
+  cursor:none !important;
+}
+.drone-trail{
+  position:fixed;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:999998;
+
+  background:radial-gradient(
+    circle,
+    rgba(255,255,255,.85),
+    rgba(255,215,109,.45),
+    rgba(255,255,255,0)
+  );
+
+  filter:blur(3px);
+  animation:trailFade .9s ease-out forwards;
+}
+
+@keyframes trailFade{
+  0%{
+    opacity:.9;
+    transform:scale(.8);
+  }
+
+  100%{
+    opacity:0;
+    transform:scale(2.8) translateY(14px);
+  }
+}
 
 /* 고정 내비바 */
 .header{
@@ -35,11 +74,9 @@ body{
   align-items:center;
   justify-content:space-between;
   padding:0 7%;
-    background:rgba(5,0,20,0.005);
-
+  background:rgba(5,0,20,0.15);
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
-
   border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
@@ -93,6 +130,17 @@ section{
   scroll-margin-top:74px;
 }
 
+.content-section{
+  padding:120px 8%;
+  background:linear-gradient(180deg,#070015,#15072d);
+}
+
+.content-section h2{
+  font-size:46px;
+  color:#ffcf70;
+  margin-bottom:30px;
+}
+
 /* 첫 화면 */
 .hero{
   width:100%;
@@ -102,13 +150,12 @@ section{
   display:flex;
   justify-content:center;
   align-items:center;
-
   background:
     linear-gradient(rgba(5,0,20,0.15), rgba(5,0,20,0.5)),
     url("./images/silhouette.png");
-
   background-size:cover;
-  background-position:center;
+  background-position:center bottom;
+  background-repeat:no-repeat;
 }
 
 .hero::after{
@@ -150,8 +197,6 @@ section{
   animation:spin 180s linear infinite;
 }
 
-
-
 .icon-item{
   position:absolute;
   left:50%;
@@ -180,10 +225,11 @@ section{
   height:42px;
 }
 
-/* 제목 클릭 */
 .caption{
   position:absolute;
-  bottom:70px;
+  top:120px;
+  left:50%;
+  transform:translateX(-50%);
   width:100%;
   text-align:center;
   z-index:10;
@@ -194,57 +240,17 @@ section{
 }
 
 .caption h1{
-  font-size:42px;
+  font-size:56px;
   color:#ffcf70;
-  margin-bottom:10px;
+  margin-bottom:14px;
+  text-shadow:0 0 25px rgba(255,207,112,.4);
 }
 
 .caption p{
-  font-size:17px;
+   font-size:20px;
   color:#eee3ff;
 }
 
-/* 아래 섹션 */
-.content-section{
-  padding:120px 8%;
-  background:linear-gradient(180deg,#070015,#15072d);
-}
-
-.content-section h2{
-  font-size:46px;
-  color:#ffcf70;
-  margin-bottom:30px;
-}
-
-.content-section p{
-  font-size:20px;
-  line-height:1.8;
-  color:#eee3ff;
-}
-
-
-/* 프로젝트 */
-.project-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:24px;
-  margin-top:40px;
-}
-
-.card{
-  min-height:220px;
-  padding:30px;
-  border-radius:28px;
-  background:rgba(255,255,255,0.07);
-  border:1px solid rgba(255,255,255,0.12);
-}
-
-.card h3{
-  color:#ffcf70;
-  margin-bottom:12px;
-}
-
-/* 애니메이션 */
 @keyframes spin{
   from{ transform:rotate(0deg); }
   to{ transform:rotate(360deg); }
@@ -255,23 +261,7 @@ section{
   to{ transform:rotate(-360deg); }
 }
 
-@media(max-width:768px){
-  .nav{
-    display:none;
-  }
-
-  .universe{
-    transform:scale(.7);
-  }
-
-  .caption h1{
-    font-size:28px;
-  }
-
-  .project-grid{
-    grid-template-columns:1fr;
-  }
-}
+/* About Me */
 .about-visual{
   text-align:center;
 }
@@ -380,35 +370,11 @@ section{
   box-shadow:0 0 45px rgba(255,215,109,.65);
 }
 
-.node-ai{
-  left:50%;
-  top:0;
-  transform:translateX(-50%);
-}
-
-.node-music{
-  left:7%;
-  top:25%;
-  animation-delay:.4s;
-}
-
-.node-design{
-  right:7%;
-  top:25%;
-  animation-delay:.8s;
-}
-
-.node-video{
-  left:16%;
-  bottom:0;
-  animation-delay:1.2s;
-}
-
-.node-global{
-  right:16%;
-  bottom:0;
-  animation-delay:1.6s;
-}
+.node-ai{ left:50%; top:0; transform:translateX(-50%); }
+.node-music{ left:7%; top:25%; animation-delay:.4s; }
+.node-design{ right:7%; top:25%; animation-delay:.8s; }
+.node-video{ left:16%; bottom:0; animation-delay:1.2s; }
+.node-global{ right:16%; bottom:0; animation-delay:1.6s; }
 
 .about-copy{
   max-width:760px;
@@ -419,12 +385,8 @@ section{
 }
 
 @keyframes flowLine{
-  from{
-    stroke-dashoffset:0;
-  }
-  to{
-    stroke-dashoffset:-44;
-  }
+  from{ stroke-dashoffset:0; }
+  to{ stroke-dashoffset:-44; }
 }
 
 @keyframes corePulse{
@@ -439,87 +401,201 @@ section{
 }
 
 @keyframes floatNode{
-  0%,100%{
-    margin-top:0;
-  }
-  50%{
-    margin-top:-14px;
-  }
+  0%,100%{ margin-top:0; }
+  50%{ margin-top:-14px; }
 }
 
-@media(max-width:768px){
-  .network-wrap{
-    height:680px;
-  }
-
-  .network-lines{
-    display:none;
-  }
-
-  .story-core{
-    top:48%;
-    width:160px;
-    height:160px;
-  }
-
-  .node{
-    width:112px;
-    height:112px;
-  }
-
-  .node-ai{
-    top:0;
-  }
-
-  .node-music{
-    left:5%;
-    top:22%;
-  }
-
-  .node-design{
-    right:5%;
-    top:22%;
-  }
-
-  .node-video{
-    left:8%;
-    bottom:5%;
-  }
-
-  .node-global{
-    right:8%;
-    bottom:5%;
-  }
-}
-/* Projects 원형 고정 메뉴 */
-
-.project-orbit-section{
+/* Projects 3D 캐러셀 */
+.project-3d-section{
   text-align:center;
   overflow:hidden;
 }
 
-.project-orbit-wrap{
+
+.project-3d-section .section-desc{
+  color:#eee3ff;
+  font-size:18px;
+  line-height:1.7;
+  margin-top:-10px;
+}
+
+.project-3d-slider{
+  width:100%;
+  height:590px;
+  margin-top:50px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  perspective:1300px;
+}
+
+.project-3d-track{
+   width:220px;
+  height:280px;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform 1.1s cubic-bezier(.45,.05,.2,1);
+   
+}
+
+.project-3d-card{
+   padding:22px 18px;
+  position:absolute;
+  inset:0;
+  border-radius:36px;
+  text-decoration:none;
+  color:white;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,207,112,.5);
+  box-shadow:0 0 45px rgba(255,207,112,.28);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+transform:rotateY(calc(var(--i) * 60deg)) translateZ(500px);translateZ(500px) ;
+  transition:background .35s ease, box-shadow .35s ease, filter .35s ease;
+   opacity:.35;
+  filter:blur(1px);
+  transition:.5s;
+}
+
+
+.project-3d-card.active{
+  opacity:1;
+  filter:none;
+  z-index:100;
+
+  background:rgba(25,15,55,.96);
+
+  border:1px solid rgba(255,207,112,.9);
+
+  box-shadow:
+  0 0 60px rgba(255,207,112,.45),
+  0 0 120px rgba(255,207,112,.25);
+}
+
+.project-3d-card:hover{
+  background:rgba(255,255,255,.14);
+  box-shadow:0 0 65px rgba(255,207,112,.55);
+}
+
+.project-icon{
+    width:56px;
+  height:56px;
+  font-size:28px;
+ 
+  border-radius:50%;
+  background:linear-gradient(135deg,#ffd66b,#ff9f3f);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  margin-bottom:22px;
+  box-shadow:0 0 35px rgba(255,207,112,.58);
+}
+
+.project-3d-card span{
+  color:#ffcf70;
+  font-size:14px;
+  font-weight:900;
+  margin-bottom:14px;
+}
+
+.project-3d-card h3{
+    font-size:22px;
+  color:#fff;
+
+  margin-bottom:14px;
+}
+
+.project-3d-card p{
+  color:#eee3ff;
+  font-size:16px;
+  line-height:1.6;
+}
+
+.project-3d-card strong{
+  color:#ffcf70;
+  font-size:15px;
+  margin-top:16px;
+}
+
+.project-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  border:1px solid rgba(255,207,112,.55);
+  background:rgba(255,255,255,.08);
+  color:#ffcf70;
+  font-size:46px;
+  line-height:52px;
+  cursor:pointer;
+  z-index:20;
+  box-shadow:0 0 30px rgba(255,207,112,.25);
+}
+
+.project-btn:hover{
+  background:rgba(255,255,255,.16);
+}
+
+.project-btn.prev{ left:6%; }
+.project-btn.next{ right:6%; }
+
+.project-dots{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:-35px;
+}
+
+.project-dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  border:0;
+  background:rgba(255,255,255,.35);
+  cursor:pointer;
+}
+
+.project-dot.active{
+  width:30px;
+  border-radius:20px;
+  background:#ffcf70;
+  box-shadow:0 0 15px rgba(255,207,112,.8);
+}
+
+.workflow-circle-section{
+  text-align:center;
+}
+
+.workflow-circle{
   width:620px;
   height:620px;
   max-width:100%;
-  margin:70px auto 0;
+  margin:60px auto 0;
   position:relative;
 }
 
-.project-orbit-wrap::before{
+.workflow-circle::before{
   content:"";
   position:absolute;
   left:50%;
   top:50%;
-  width:460px;
-  height:460px;
+  width:470px;
+  height:470px;
   transform:translate(-50%,-50%);
-  border:1px solid rgba(255,207,112,.35);
+  border:2px dashed rgba(255,207,112,.45);
   border-radius:50%;
   box-shadow:0 0 35px rgba(255,207,112,.18);
+  animation:flowOrbit 30s linear infinite;
 }
 
-.project-center{
+.workflow-center{
   position:absolute;
   left:50%;
   top:50%;
@@ -537,247 +613,125 @@ section{
   z-index:5;
 }
 
-.project-center h3{
+.workflow-center h3{
   color:#ffcf70;
-  font-size:27px;
-  line-height:1.2;
+  font-size:28px;
+  margin-bottom:10px;
 }
 
-.project-center p{
-  margin-top:12px;
-  font-size:14px;
+.workflow-center p{
   color:#eee3ff;
+  font-size:14px;
+  line-height:1.6;
+  max-width:150px;
 }
 
-.project-orbit{
+.flow-step{
   position:absolute;
-  inset:0;
-}
-
-.project-planet{
-  position:absolute;
-  width:130px;
-  height:130px;
+  width:135px;
+  height:135px;
   border-radius:32px;
-  text-decoration:none;
-  color:white;
   background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,207,112,.5);
-  box-shadow:0 0 28px rgba(255,207,112,.25);
+  border:1px solid rgba(255,207,112,.45);
+  box-shadow:0 0 28px rgba(255,207,112,.22);
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:9px;
+  gap:10px;
   transition:.35s ease;
 }
 
-.project-planet span{
-  font-size:32px;
+.flow-step span{
+  font-size:34px;
 }
 
-.project-planet strong{
+.flow-step h3{
   color:#ffcf70;
-  font-size:16px;
+  font-size:17px;
 }
 
-/* 카드 위치 */
-.planet-1{
-  left:50%;
-  top:20px;
-  transform:translateX(-50%);
-}
-
-.planet-2{
-  right:40px;
-  top:135px;
-}
-
-.planet-3{
-  right:75px;
-  bottom:80px;
-}
-
-.planet-4{
-  left:50%;
-  bottom:20px;
-  transform:translateX(-50%);
-}
-
-.planet-5{
-  left:75px;
-  bottom:80px;
-}
-
-.planet-6{
-  left:40px;
-  top:135px;
-}
-
-/* 마우스 올렸을 때 */
-.project-planet:hover{
+.flow-step:hover{
+  transform:scale(1.12);
   background:rgba(255,255,255,.14);
-  box-shadow:0 0 48px rgba(255,207,112,.55);
+  box-shadow:0 0 48px rgba(255,207,112,.5);
 }
 
-.planet-1:hover,
-.planet-4:hover{
+.flow-1{
+  left:50%;
+  top:0;
+  transform:translateX(-50%);
+}
+
+.flow-2{
+  right:35px;
+  top:150px;
+}
+
+.flow-3{
+  right:95px;
+  bottom:45px;
+}
+
+.flow-4{
+  left:95px;
+  bottom:45px;
+}
+
+.flow-5{
+  left:35px;
+  top:150px;
+}
+
+.flow-1:hover{
   transform:translateX(-50%) scale(1.12);
 }
 
-.planet-2:hover,
-.planet-3:hover,
-.planet-5:hover,
-.planet-6:hover{
-  transform:scale(1.12);
+@keyframes flowOrbit{
+  from{ transform:translate(-50%,-50%) rotate(0deg); }
+  to{ transform:translate(-50%,-50%) rotate(360deg); }
 }
 
-/* 모바일 */
 @media(max-width:768px){
-  .project-orbit-wrap{
+  .workflow-circle{
     width:520px;
     height:520px;
     transform:scale(.82);
     transform-origin:top center;
   }
 
-  .project-orbit-wrap::before{
+  .workflow-circle::before{
     width:390px;
     height:390px;
   }
 
-  .project-planet{
+  .flow-step{
     width:115px;
     height:115px;
   }
 
-  .planet-1{
-    top:15px;
-  }
-
-  .planet-2{
+  .flow-2{
     right:30px;
-    top:115px;
+    top:125px;
   }
 
-  .planet-3{
-    right:55px;
-    bottom:65px;
+  .flow-3{
+    right:70px;
+    bottom:45px;
   }
 
-  .planet-4{
-    bottom:15px;
+  .flow-4{
+    left:70px;
+    bottom:45px;
   }
 
-  .planet-5{
-    left:55px;
-    bottom:65px;
-  }
-
-  .planet-6{
+  .flow-5{
     left:30px;
-    top:115px;
-  }
-}
-.workflow-section{
-  text-align:center;
-}
-
-.workflow-line{
-  margin:70px auto 0;
-  max-width:1180px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:18px;
-  flex-wrap:nowrap;
-}
-
-.workflow-step{
-  width:190px;
-  min-height:210px;
-  padding:28px 18px;
-  border-radius:30px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,207,112,.35);
-  box-shadow:0 0 28px rgba(255,207,112,.16);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  transition:.35s ease;
-}
-
-.workflow-step:hover{
-  transform:translateY(-10px);
-  background:rgba(255,255,255,.12);
-  box-shadow:0 0 45px rgba(255,207,112,.35);
-}
-
-.step-icon{
-  width:62px;
-  height:62px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#ffd66b,#ff9f3f);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-  margin-bottom:18px;
-  box-shadow:0 0 28px rgba(255,207,112,.55);
-}
-
-.workflow-step h3{
-  color:#ffcf70;
-  font-size:20px;
-  margin-bottom:10px;
-}
-
-.workflow-step p{
-  color:#eee3ff;
-  font-size:15px;
-  line-height:1.6;
-}
-
-.workflow-arrow{
-  color:#ffcf70;
-  font-size:34px;
-  font-weight:900;
-  text-shadow:0 0 18px rgba(255,207,112,.8);
-  animation:arrowGlow 1.8s ease-in-out infinite;
-}
-
-@keyframes arrowGlow{
-  0%,100%{
-    opacity:.45;
-    transform:translateX(0);
-  }
-  50%{
-    opacity:1;
-    transform:translateX(6px);
+    top:125px;
   }
 }
 
-@media(max-width:900px){
-  .workflow-line{
-    flex-direction:column;
-  }
-
-  .workflow-arrow{
-    transform:rotate(90deg);
-  }
-
-  @keyframes arrowGlow{
-    0%,100%{
-      opacity:.45;
-      transform:rotate(90deg) translateX(0);
-    }
-    50%{
-      opacity:1;
-      transform:rotate(90deg) translateX(6px);
-    }
-  }
-}
+/* Contact */
 .contact-section{
   text-align:center;
 }
@@ -870,14 +824,99 @@ section{
     transform:scale(1);
     box-shadow:0 0 45px rgba(255,207,112,.25);
   }
-
   50%{
     transform:scale(1.04);
     box-shadow:0 0 75px rgba(255,207,112,.55);
   }
 }
 
+/* 반응형 */
+@media(max-width:900px){
+  .workflow-line{
+    flex-direction:column;
+  }
+
+  .workflow-arrow{
+    transform:rotate(90deg);
+  }
+
+  @keyframes arrowGlow{
+    0%,100%{
+      opacity:.45;
+      transform:rotate(90deg) translateX(0);
+    }
+    50%{
+      opacity:1;
+      transform:rotate(90deg) translateX(6px);
+    }
+  }
+}
+
 @media(max-width:768px){
+  .nav{
+    display:none;
+  }
+
+  .universe{
+    transform:scale(.7);
+  }
+
+  .caption h1{
+    font-size:28px;
+  }
+
+  .content-section{
+    padding:100px 6%;
+  }
+
+  .network-wrap{
+    height:680px;
+  }
+
+  .network-lines{
+    display:none;
+  }
+
+  .story-core{
+    top:48%;
+    width:160px;
+    height:160px;
+  }
+
+  .node{
+    width:112px;
+    height:112px;
+  }
+
+  .node-ai{ top:0; }
+  .node-music{ left:5%; top:22%; }
+  .node-design{ right:5%; top:22%; }
+  .node-video{ left:8%; bottom:5%; }
+  .node-global{ right:8%; bottom:5%; }
+
+  .project-3d-slider{
+    height:520px;
+    perspective:900px;
+  }
+
+  .project-3d-track{
+    width:210px;
+    height:300px;
+  }
+
+  .project-3d-card{
+    transform:rotateY(calc(var(--i) * 60deg)) translateZ(300px);
+  }
+
+  .project-btn{
+    width:46px;
+    height:46px;
+    font-size:36px;
+    line-height:40px;
+  }
+
+  .project-btn.prev{ left:1%; }
+  .project-btn.next{ right:1%; }
 
   .station-core{
     width:220px;
@@ -888,6 +927,109 @@ section{
     width:100%;
     max-width:320px;
   }
+}
+
+/* 오른쪽 하단 섹션 이동 버튼 */
+.scroll-buttons{
+  position:fixed;
+  right:25px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:9999;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.scroll-buttons button{
+  width:78px;
+  height:78px;
+  border:none;
+  border-radius:50%;
+  background:rgba(0,0,0,.88);
+  color:white;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  box-shadow:0 0 35px rgba(0,0,0,.55);
+}
+
+.scroll-buttons button span{
+  font-size:30px;
+}
+
+.scroll-buttons button small{
+  font-size:16px;
+  font-weight:900;
+  color:white;
+}
+
+@media(max-width:768px){
+  .scroll-buttons{
+    right:16px;
+    bottom:16px;
+  }
+
+  .scroll-buttons button{
+    width:44px;
+    height:44px;
+    font-size:17px;
+  }
+}
+/* 드론 커서 */
+
+body{
+  cursor:none;
+}
+
+#droneCursor{
+  position:fixed;
+
+  left:0;
+  top:0;
+
+  width:60px;
+  height:60px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:38px;
+
+  pointer-events:none;
+
+  z-index:999999;
+
+  transform:translate(-50%,-50%);
+
+  filter:
+    drop-shadow(0 0 10px rgba(255,215,109,.7))
+    drop-shadow(0 0 20px rgba(255,215,109,.6))
+    drop-shadow(0 0 35px rgba(255,215,109,.5));
+
+  animation:
+    droneGlow 2s ease-in-out infinite;
+}
+
+@keyframes droneGlow{
+
+  0%,100%{
+    filter:
+      drop-shadow(0 0 10px rgba(255,215,109,.6))
+      drop-shadow(0 0 20px rgba(255,215,109,.4));
+  }
+
+  50%{
+    filter:
+      drop-shadow(0 0 18px rgba(255,215,109,.9))
+      drop-shadow(0 0 35px rgba(255,215,109,.8))
+      drop-shadow(0 0 55px rgba(255,215,109,.7));
+  }
+
 }
 
 </style>
@@ -912,7 +1054,6 @@ section{
 </header>
 
 <section class="hero" id="home">
-
   <div class="universe">
     <div class="orbit-line"></div>
     <div class="orbit-line small"></div>
@@ -920,37 +1061,37 @@ section{
     <div class="icons-layer">
       <div class="icon-item" style="--angle:0deg;">
         <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:brain.svg?color=%23ffd76d">
+          <img src="https://api.iconify.design/mdi:brain.svg?color=%23ffd76d" alt="AI">
         </div>
       </div>
 
       <div class="icon-item" style="--angle:60deg;">
         <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:microphone.svg?color=%23ffd76d">
+          <img src="https://api.iconify.design/mdi:microphone.svg?color=%23ffd76d" alt="Music">
         </div>
       </div>
 
       <div class="icon-item" style="--angle:120deg;">
         <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:laptop.svg?color=%23ffd76d">
+          <img src="https://api.iconify.design/mdi:laptop.svg?color=%23ffd76d" alt="UX">
         </div>
       </div>
 
       <div class="icon-item" style="--angle:180deg;">
         <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:pen.svg?color=%23ffd76d">
+          <img src="https://api.iconify.design/mdi:pen.svg?color=%23ffd76d" alt="Design">
         </div>
       </div>
 
       <div class="icon-item" style="--angle:240deg;">
         <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:earth.svg?color=%23ffd76d">
+          <img src="https://api.iconify.design/mdi:earth.svg?color=%23ffd76d" alt="Global">
         </div>
       </div>
 
       <div class="icon-item" style="--angle:300deg;">
         <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:play-circle.svg?color=%23ffd76d">
+          <img src="https://api.iconify.design/mdi:play-circle.svg?color=%23ffd76d" alt="Video">
         </div>
       </div>
     </div>
@@ -962,15 +1103,12 @@ section{
       <p>AI · Music · Design · Global · Video · UX</p>
     </a>
   </div>
-
 </section>
 
-<section class="content-section" id="about">
- <section class="content-section about-visual" id="about">
+<section class="content-section about-visual" id="about">
   <h2>About Me</h2>
 
   <div class="network-wrap">
-
     <svg class="network-lines" viewBox="0 0 800 520">
       <line x1="400" y1="260" x2="400" y2="70" />
       <line x1="400" y1="260" x2="170" y2="180" />
@@ -1009,124 +1147,133 @@ section{
       <span>🌏</span>
       <strong>Global</strong>
     </div>
-
   </div>
 
   <p class="about-copy">
     AI, 음악, 디자인, 영상, 다국어 콘텐츠를 연결해 사람의 이야기가 살아나는 디지털 콘텐츠를 만듭니다.
   </p>
 </section>
-</section>
 
-<section class="content-section project-orbit-section" id="projects">
+<section class="content-section project-3d-section" id="projects">
   <h2>Projects</h2>
+  <p class="section-desc">모든 프로젝트를 입체적으로 보여주고, 가운데 카드에서 잠시 멈추도록 구성했습니다.</p>
 
-  <div class="project-orbit-wrap">
+  <div class="project-3d-slider" id="projectSlider">
+    <button class="project-btn prev" type="button" onclick="prevProject()">‹</button>
 
-    <div class="project-center">
-      <h3>Featured<br>Projects</h3>
-      <p>Click the project</p>
+    <div class="project-3d-track" id="projectTrack">
+      <a href="#" class="project-3d-card" style="--i:0;">
+        <div class="project-icon">☕</div>
+        <span>Brand UX</span>
+        <h3>Starbucks</h3>
+        <p>브랜드 리디자인</p>
+        <strong>View Project →</strong>
+      </a>
+
+      <a href="#" class="project-3d-card" style="--i:1;">
+        <div class="project-icon">🏠</div>
+        <span>Promotion</span>
+        <h3>Airbnb</h3>
+        <p>서울 프로모션</p>
+        <strong>View Project →</strong>
+      </a>
+
+      <a href="#" class="project-3d-card" style="--i:2;">
+        <div class="project-icon">🕶</div>
+        <span>Branding</span>
+        <h3>GoldenFit</h3>
+        <p>선글라스 브랜드</p>
+        <strong>View Project →</strong>
+      </a>
+
+      <a href="#" class="project-3d-card" style="--i:3;">
+        <div class="project-icon">🥗</div>
+        <span>AI Service</span>
+        <h3>CoolFriends</h3>
+        <p>AI 냉장고 UX</p>
+        <strong>View Project →</strong>
+      </a>
+
+      <a href="#" class="project-3d-card" style="--i:4;">
+        <div class="project-icon">🎵</div>
+        <span>AI Video</span>
+        <h3>Music Video</h3>
+        <p>AI 뮤직비디오</p>
+        <strong>Watch Video →</strong>
+      </a>
+
+      <a href="https://youtube.com/@디디맘의노래선물" target="_blank" class="project-3d-card" style="--i:5;">
+        <div class="project-icon">📺</div>
+        <span>YouTube</span>
+        <h3>YouTube</h3>
+        <p>콘텐츠 채널</p>
+        <strong>Go Channel →</strong>
+      </a>
     </div>
 
-    <div class="project-orbit">
+    <button class="project-btn next" type="button" onclick="nextProject()">›</button>
+  </div>
 
-      <a href="#" class="project-planet planet-1">
-        <span>☕</span>
-        <strong>Starbucks</strong>
-      </a>
-
-      <a href="#" class="project-planet planet-2">
-        <span>🏠</span>
-        <strong>Airbnb</strong>
-      </a>
-
-      <a href="#" class="project-planet planet-3">
-        <span>🕶</span>
-        <strong>GoldenFit</strong>
-      </a>
-
-      <a href="#" class="project-planet planet-4">
-        <span>🥗</span>
-        <strong>CoolFriends</strong>
-      </a>
-
-      <a href="#" class="project-planet planet-5">
-        <span>🎵</span>
-        <strong>Music Video</strong>
-      </a>
-
-      <a href="#" class="project-planet planet-6">
-        <span>📺</span>
-        <strong>YouTube</strong>
-      </a>
-
-    </div>
+  <div class="project-dots">
+    <button class="project-dot active" type="button" onclick="goProject(0)"></button>
+    <button class="project-dot" type="button" onclick="goProject(1)"></button>
+    <button class="project-dot" type="button" onclick="goProject(2)"></button>
+    <button class="project-dot" type="button" onclick="goProject(3)"></button>
+    <button class="project-dot" type="button" onclick="goProject(4)"></button>
+    <button class="project-dot" type="button" onclick="goProject(5)"></button>
   </div>
 </section>
 
-<section class="content-section workflow-section" id="workflow">
+<section class="content-section workflow-circle-section" id="workflow">
   <h2>Workflow</h2>
 
-  <div class="workflow-line">
+  <div class="workflow-circle">
 
-    <div class="workflow-step">
-      <div class="step-icon">📝</div>
+    <div class="workflow-center">
+      <h3>Feedback</h3>
+      <p>산출물이 다시 기획으로 연결됩니다</p>
+    </div>
+
+    <div class="flow-step flow-1">
+      <span>📝</span>
       <h3>기획</h3>
-      <p>아이디어와 방향 설정</p>
     </div>
 
-    <div class="workflow-arrow">→</div>
-
-    <div class="workflow-step">
-      <div class="step-icon">🖼️</div>
+    <div class="flow-step flow-2">
+      <span>🖼️</span>
       <h3>이미지 생성</h3>
-      <p>AI 이미지와 비주얼 제작</p>
     </div>
 
-    <div class="workflow-arrow">→</div>
-
-    <div class="workflow-step">
-      <div class="step-icon">🎬</div>
+    <div class="flow-step flow-3">
+      <span>🎬</span>
       <h3>영상 구성</h3>
-      <p>장면 순서와 흐름 설계</p>
     </div>
 
-    <div class="workflow-arrow">→</div>
-
-    <div class="workflow-step">
-      <div class="step-icon">✂️</div>
+    <div class="flow-step flow-4">
+      <span>✂️</span>
       <h3>자막/편집</h3>
-      <p>가사, 자막, 화면 편집</p>
     </div>
 
-    <div class="workflow-arrow">→</div>
-
-    <div class="workflow-step">
-      <div class="step-icon">🌐</div>
+    <div class="flow-step flow-5">
+      <span>🌐</span>
       <h3>포트폴리오 적용</h3>
-      <p>웹사이트와 콘텐츠로 완성</p>
     </div>
 
   </div>
 </section>
 
 <section class="content-section contact-section" id="contact">
-
   <h2>Contact</h2>
 
   <div class="contact-station">
-
     <div class="station-core">
       <div class="station-icon">🚀</div>
       <h3>Let's Connect</h3>
-      <p>
-        새로운 프로젝트와 협업을 기다립니다.
-      </p>
+      <p>새로운 프로젝트와 협업을 기다립니다.</p>
     </div>
 
     <div class="contact-links">
-
-      <a href="jominyeongg@gmail.com" class="contact-card">
+      <a href="mailto:jominyeongg@gmail.com" class="contact-card">
         <span>📧</span>
         <h4>Email</h4>
         <p>jominyeongg@gmail.com</p>
@@ -1138,17 +1285,239 @@ section{
         <p>Channel Visit</p>
       </a>
 
-      <a href=" https://ddmom.github.io/newportfolio/" target="_blank" class="contact-card">
+      <a href="https://ddmom.github.io/newportfolio/" target="_blank" class="contact-card">
         <span>💻</span>
         <h4>Portfolio</h4>
         <p>View Projects</p>
       </a>
-
     </div>
-
   </div>
-
 </section>
+<div class="scroll-buttons">
+  <button id="upBtn" onclick="moveSection(-1)">
+    <span>🚀</span>
+    <small>UP</small>
+  </button>
+
+  <button id="downBtn" onclick="moveSection(1)">
+    <span>🌌</span>
+    <small>DOWN</small>
+  </button>
+</div>
+
+<div id="droneCursor">🚁</div>
+
+
+<script>
+/* 프로젝트 3D 슬라이더 */
+const projectTrack = document.getElementById("projectTrack");
+const projectSlider = document.getElementById("projectSlider");
+const projectDots = document.querySelectorAll(".project-dot");
+const projectCards = document.querySelectorAll(".project-3d-card");
+
+let projectIndex = 0;
+const totalProjects = projectCards.length;
+let autoProject;
+let wheelLock = false;
+
+function updateProject(){
+  projectTrack.style.transform = `rotateY(${-projectIndex * 60}deg)`;
+
+  projectDots.forEach((dot, index)=>{
+    dot.classList.toggle("active", index === projectIndex);
+  });
+
+  projectCards.forEach((card, index)=>{
+    card.classList.toggle("active", index === projectIndex);
+  });
+}
+
+function nextProject(){
+  projectIndex = (projectIndex + 1) % totalProjects;
+  updateProject();
+  resetAutoProject();
+}
+
+function prevProject(){
+  projectIndex = (projectIndex - 1 + totalProjects) % totalProjects;
+  updateProject();
+  resetAutoProject();
+}
+
+function goProject(index){
+  projectIndex = index;
+  updateProject();
+  resetAutoProject();
+}
+
+function startAutoProject(){
+  autoProject = setInterval(()=>{
+    projectIndex = (projectIndex + 1) % totalProjects;
+    updateProject();
+  }, 7200);
+}
+
+function resetAutoProject(){
+  clearInterval(autoProject);
+  startAutoProject();
+}
+
+projectSlider.addEventListener("wheel", function(event){
+  event.preventDefault();
+
+  if(wheelLock) return;
+  wheelLock = true;
+
+  if(event.deltaY > 0){
+    nextProject();
+  }else{
+    prevProject();
+  }
+
+  setTimeout(()=>{
+    wheelLock = false;
+  }, 900);
+}, { passive:false });
+
+projectSlider.addEventListener("mouseenter", ()=>{
+  clearInterval(autoProject);
+});
+
+projectSlider.addEventListener("mouseleave", ()=>{
+  startAutoProject();
+});
+
+updateProject();
+startAutoProject();
+
+
+/* 오른쪽 UP / DOWN 섹션 이동 */
+const sections = ["home","about","projects","workflow","contact"];
+
+function getCurrentSectionIndex(){
+  let currentIndex = 0;
+
+  sections.forEach((id,index)=>{
+    const section = document.getElementById(id);
+    const rect = section.getBoundingClientRect();
+
+    if(rect.top <= window.innerHeight / 2){
+      currentIndex = index;
+    }
+  });
+
+  return currentIndex;
+}
+
+function moveSection(direction){
+  let currentIndex = getCurrentSectionIndex();
+  let nextIndex = currentIndex + direction;
+
+  if(nextIndex < 0) nextIndex = 0;
+  if(nextIndex >= sections.length) nextIndex = sections.length - 1;
+
+  document.getElementById(sections[nextIndex]).scrollIntoView({
+    behavior:"smooth"
+  });
+
+  setTimeout(updateScrollButtons, 700);
+}
+
+function updateScrollButtons(){
+  const currentIndex = getCurrentSectionIndex();
+
+  const upBtn = document.getElementById("upBtn");
+  const downBtn = document.getElementById("downBtn");
+
+  if(!upBtn || !downBtn) return;
+
+  upBtn.style.display = currentIndex === 0 ? "none" : "flex";
+  downBtn.style.display = currentIndex === sections.length - 1 ? "none" : "flex";
+}
+
+window.addEventListener("scroll", updateScrollButtons);
+window.addEventListener("load", updateScrollButtons);
+
+
+
+/* 드론 커서 */
+
+/* 드론 커서 */
+
+const drone = document.getElementById("droneCursor");
+
+let droneX = window.innerWidth / 2;
+let droneY = window.innerHeight / 2;
+
+let mouseX = droneX;
+let mouseY = droneY;
+
+let trailCount = 0;
+
+document.addEventListener("mousemove", (e)=>{
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function createDroneTrail(x, y){
+
+  trailCount++;
+
+  if(trailCount % 4 !== 0) return;
+
+  const trail = document.createElement("div");
+  trail.className = "drone-trail";
+
+  trail.style.left = (x - 18) + "px";
+  trail.style.top = (y + 16) + "px";
+
+  document.body.appendChild(trail);
+
+  setTimeout(()=>{
+    trail.remove();
+  }, 900);
+}
+
+function animateDrone(){
+
+  droneX += (mouseX - droneX) * 0.08;
+  droneY += (mouseY - droneY) * 0.08;
+
+  drone.style.left = droneX + "px";
+  drone.style.top = droneY + "px";
+
+  createDroneTrail(droneX, droneY);
+
+  requestAnimationFrame(animateDrone);
+}
+
+animateDrone();
+function animateDrone(){
+
+  droneX +=
+    (mouseX - droneX) * 0.08;
+
+  droneY +=
+    (mouseY - droneY) * 0.08;
+
+  drone.style.left =
+    droneX + "px";
+
+  drone.style.top =
+    droneY + "px";
+    createDroneTrail(droneX, droneY);
+
+  requestAnimationFrame(
+    animateDrone
+  );
+
+}
+
+animateDrone();
+
+
+
+</script>
 
 </body>
 </html>
