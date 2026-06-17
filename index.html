@@ -319,6 +319,16 @@ section{
   margin-bottom:12px;
 }
 
+.story-photo{
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:12px;
+  border:2px solid rgba(255,215,109,.85);
+  box-shadow:0 0 25px rgba(255,215,109,.55);
+}
+
 .story-core h3{
   color:#ffcf70;
   font-size:26px;
@@ -425,8 +435,8 @@ section{
 }
 
 .project-3d-track{
-   width:220px;
-  height:280px;
+   width:240px;
+  height:340px;
   position:relative;
   transform-style:preserve-3d;
   transition:transform 1.1s cubic-bezier(.45,.05,.2,1);
@@ -434,7 +444,7 @@ section{
 }
 
 .project-3d-card{
-   padding:22px 18px;
+   padding:20px 16px;
   position:absolute;
   inset:0;
   border-radius:36px;
@@ -488,6 +498,16 @@ transform:rotateY(calc(var(--i) * 60deg)) translateZ(500px);translateZ(500px) ;
 
   margin-bottom:22px;
   box-shadow:0 0 35px rgba(255,207,112,.58);
+}
+
+.project-thumb{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  border-radius:20px;
+  margin-bottom:16px;
+  border:1px solid rgba(255,207,112,.5);
+  box-shadow:0 0 25px rgba(255,207,112,.3);
 }
 
 .project-3d-card span{
@@ -777,7 +797,7 @@ transform:rotateY(calc(var(--i) * 60deg)) translateZ(500px);translateZ(500px) ;
 
 .contact-card{
   width:240px;
-  min-height:220px;
+  min-height:300px;
   border-radius:30px;
   text-decoration:none;
   color:white;
@@ -788,6 +808,7 @@ transform:rotateY(calc(var(--i) * 60deg)) translateZ(500px);translateZ(500px) ;
   flex-direction:column;
   align-items:center;
   justify-content:center;
+  padding:28px 20px;
   transition:.35s ease;
 }
 
@@ -805,6 +826,16 @@ transform:rotateY(calc(var(--i) * 60deg)) translateZ(500px);translateZ(500px) ;
 .contact-card p{
   color:#eee3ff;
   font-size:15px;
+}
+
+.contact-thumb{
+  width:100%;
+  height:110px;
+  object-fit:cover;
+  border-radius:18px;
+  margin-top:18px;
+  border:1px solid rgba(255,207,112,.5);
+  box-shadow:0 0 22px rgba(255,207,112,.3);
 }
 
 .contact-card:hover{
@@ -894,8 +925,12 @@ transform:rotateY(calc(var(--i) * 60deg)) translateZ(500px);translateZ(500px) ;
   }
 
   .project-3d-track{
-    width:210px;
-    height:300px;
+    width:220px;
+    height:360px;
+  }
+
+  .project-thumb{
+    height:120px;
   }
 
   .project-3d-card{
@@ -1162,7 +1197,7 @@ body{
     </svg>
 
     <div class="story-core">
-      <div class="core-icon">人</div>
+      <img src="./images/image7.png" alt="내 사진" class="story-photo">
       <h3>Story</h3>
       <p>사람의 이야기</p>
     </div>
@@ -1207,7 +1242,7 @@ body{
 
     <div class="project-3d-track" id="projectTrack">
       <a href="#" class="project-3d-card" style="--i:0;">
-        <div class="project-icon">☕</div>
+        <img src="./images/image1.png" alt="Starbucks 브랜드 리디자인 결과물" class="project-thumb">
         <span>Brand UX</span>
         <h3>Starbucks</h3>
         <p>브랜드 리디자인</p>
@@ -1215,7 +1250,7 @@ body{
       </a>
 
       <a href="#" class="project-3d-card" style="--i:1;">
-        <div class="project-icon">🏠</div>
+        <img src="./images/image2.png" alt="Airbnb 서울 프로모션 결과물" class="project-thumb">
         <span>Promotion</span>
         <h3>Airbnb</h3>
         <p>서울 프로모션</p>
@@ -1223,7 +1258,7 @@ body{
       </a>
 
       <a href="#" class="project-3d-card" style="--i:2;">
-        <div class="project-icon">🕶</div>
+        <img src="./images/image3.png" alt="GoldenFit 선글라스 브랜딩 결과물" class="project-thumb">
         <span>Branding</span>
         <h3>GoldenFit</h3>
         <p>선글라스 브랜드</p>
@@ -1231,7 +1266,7 @@ body{
       </a>
 
       <a href="#" class="project-3d-card" style="--i:3;">
-        <div class="project-icon">🥗</div>
+        <img src="./images/image4.png" alt="CoolFriends AI 냉장고 UX 결과물" class="project-thumb">
         <span>AI Service</span>
         <h3>CoolFriends</h3>
         <p>AI 냉장고 UX</p>
@@ -1239,7 +1274,7 @@ body{
       </a>
 
       <a href="#" class="project-3d-card" style="--i:4;">
-        <div class="project-icon">🎵</div>
+        <img src="./images/image5.png" alt="AI 뮤직비디오 결과물" class="project-thumb">
         <span>AI Video</span>
         <h3>Music Video</h3>
         <p>AI 뮤직비디오</p>
@@ -1247,7 +1282,7 @@ body{
       </a>
 
       <a href="https://youtube.com/@디디맘의노래선물" target="_blank" class="project-3d-card" style="--i:5;">
-        <div class="project-icon">📺</div>
+        <img src="./images/image6.png" alt="YouTube 콘텐츠 채널 썸네일" class="project-thumb">
         <span>YouTube</span>
         <h3>YouTube</h3>
         <p>콘텐츠 채널</p>
@@ -1321,18 +1356,21 @@ body{
         <span>📧</span>
         <h4>Email</h4>
         <p>jominyeongg@gmail.com</p>
+        <img src="./images/image7.png" alt="내 사진" class="contact-thumb">
       </a>
 
       <a href="https://youtube.com/@디디맘의노래선물" target="_blank" class="contact-card">
         <span>📺</span>
         <h4>YouTube</h4>
         <p>Channel Visit</p>
+        <img src="./images/image6.png" alt="YouTube 채널 썸네일" class="contact-thumb">
       </a>
 
       <a href="https://ddmom.github.io/newportfolio/" target="_blank" class="contact-card">
         <span>💻</span>
         <h4>Portfolio</h4>
         <p>View Projects</p>
+        <img src="./images/image8.png" alt="포트폴리오 사진" class="contact-thumb">
       </a>
     </div>
   </div>
