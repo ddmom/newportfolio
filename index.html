@@ -4,1602 +4,254 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DDMAM Portfolio</title>
-
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  background:#070015;
-  font-family:'Pretendard','Noto Sans KR',sans-serif;
-  color:white;
-  overflow-x:hidden;
-}
-#droneCursor{
-  pointer-events:none;
-  z-index:999999;
-}
-*,
-*::before,
-*::after{
-  cursor:none !important;
-}
-.drone-trail{
-  position:fixed;
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  pointer-events:none;
-  z-index:999998;
-
-  background:radial-gradient(
-    circle,
-    rgba(255,255,255,.85),
-    rgba(255,215,109,.45),
-    rgba(255,255,255,0)
-  );
-
-  filter:blur(3px);
-  animation:trailFade .9s ease-out forwards;
-}
-
-@keyframes trailFade{
-  0%{
-    opacity:.9;
-    transform:scale(.8);
+  :root{
+    --bg:#0B0714;
+    --bg-soft:#150A26;
+    --card:#1A0F30;
+    --line:rgba(255,255,255,0.08);
+    --text:#EDE7FF;
+    --text-muted:#9C8FC2;
+    --gold:#FFCF70;
+    --gold-deep:#FF9F3F;
+    --nav-h:74px;
   }
+  *{margin:0; padding:0; box-sizing:border-box;}
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--bg); font-family:"Pretendard","Noto Sans KR",sans-serif; color:var(--text); }
 
-  100%{
-    opacity:0;
-    transform:scale(2.8) translateY(14px);
+  .page-wrap{ max-width:1180px; margin:0 auto; padding:0 24px; }
+
+  /* ---------- 네비게이션 ---------- */
+  .header{ position:sticky; top:0; z-index:99; height:var(--nav-h); background:rgba(11,7,20,0.85); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  .header .page-wrap{ height:100%; display:flex; align-items:center; justify-content:space-between; }
+  .logo{ display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--text); }
+  .logo-icon{ width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg,var(--gold),var(--gold-deep)); color:#16001f; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:16px; }
+  .logo-text{ font-weight:800; font-size:16px; letter-spacing:0.5px; }
+  .nav{ display:flex; gap:6px; }
+  .nav a{ color:var(--text-muted); text-decoration:none; font-size:14px; font-weight:700; padding:8px 12px; border-radius:8px; }
+  .nav a:hover{ color:var(--gold); }
+
+  /* ---------- 히어로 ---------- */
+  .hero{ padding:110px 0 90px; text-align:center; position:relative; overflow:hidden; }
+  .hero-ring{ position:absolute; left:50%; top:60%; transform:translate(-50%,-50%); border-radius:50%; border:1px solid rgba(255,207,112,0.18); }
+  .hero-ring.r1{ width:520px; height:520px; }
+  .hero-ring.r2{ width:380px; height:380px; }
+  .hero .page-wrap{ position:relative; z-index:2; }
+  .hero-eyebrow{ font-size:13px; letter-spacing:3px; color:var(--gold); font-weight:700; text-transform:uppercase; margin-bottom:16px; }
+  .hero h1{ font-size:clamp(32px,6vw,54px); font-weight:900; color:var(--gold); text-shadow:0 0 30px rgba(255,207,112,0.25); margin-bottom:14px; letter-spacing:-1px; }
+  .hero p{ font-size:18px; color:var(--text-muted); }
+
+  /* ---------- 섹션 공통 ---------- */
+  .section{ padding:90px 0; scroll-margin-top:var(--nav-h); }
+  .section-title{ font-size:34px; font-weight:900; color:var(--gold); margin-bottom:12px; }
+  .section-desc{ font-size:16px; color:var(--text-muted); max-width:560px; line-height:1.7; margin-bottom:46px; }
+
+  /* ---------- 프로젝트 : 정적 그리드 ---------- */
+  .project-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:22px; }
+  .project-card{ display:block; text-decoration:none; color:var(--text); background:var(--card); border:1px solid var(--line); border-radius:22px; overflow:hidden; transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+  .project-card:hover{ transform:translateY(-6px); box-shadow:0 16px 40px rgba(255,207,112,0.18); border-color:rgba(255,207,112,0.4); }
+  .project-thumb{ height:150px; display:flex; align-items:center; justify-content:center; font-size:44px; }
+  .project-body{ padding:18px 20px 22px; }
+  .project-tag{ font-size:12px; font-weight:800; color:var(--gold); letter-spacing:0.5px; margin-bottom:8px; display:block; }
+  .project-card h3{ font-size:19px; font-weight:800; margin-bottom:6px; }
+  .project-card p{ font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:12px; }
+  .project-link{ font-size:13px; font-weight:800; color:var(--gold); }
+  .project-card.featured{ border-color:rgba(255,207,112,0.55); box-shadow:0 0 0 1px rgba(255,207,112,0.25) inset; }
+  .featured-badge{ display:inline-block; font-size:11px; font-weight:800; background:var(--gold); color:#16001f; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+
+  /* 프로젝트별 썸네일 배경색 */
+  .thumb-1{ background:linear-gradient(135deg,#1B2A3D,#0E1622); }
+  .thumb-2{ background:linear-gradient(135deg,#3D1B2E,#220E17); }
+  .thumb-3{ background:linear-gradient(135deg,#2E2A0E,#171408); }
+  .thumb-4{ background:linear-gradient(135deg,#0E3D33,#081F1A); }
+  .thumb-5{ background:linear-gradient(135deg,#2A0E3D,#150822); }
+  .thumb-6{ background:linear-gradient(135deg,#3D2A0E,#221708); }
+  .thumb-song{ background:linear-gradient(135deg,#4A2E12,#7A3B0E); }
+
+  /* ---------- About (간단화) ---------- */
+  .about-body{ display:flex; flex-direction:column; gap:24px; max-width:720px; }
+  .about-body p{ font-size:16px; color:var(--text-muted); line-height:1.8; }
+  .skill-row{ display:flex; flex-wrap:wrap; gap:10px; }
+  .skill-chip{ font-size:13px; font-weight:700; color:var(--gold); background:rgba(255,207,112,0.08); border:1px solid rgba(255,207,112,0.3); padding:8px 16px; border-radius:999px; }
+
+  .tool-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(84px,1fr)); gap:18px; max-width:620px; }
+  .tool-item{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .tool-icon{ width:60px; height:60px; border-radius:18px; background:rgba(255,207,112,0.08); border:1px solid rgba(255,207,112,0.25); display:flex; align-items:center; justify-content:center; }
+  .tool-icon img{ width:30px; height:30px; }
+  .tool-name{ font-size:12px; font-weight:600; color:var(--text-muted); text-align:center; }
+
+  /* ---------- Contact ---------- */
+  .contact-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:20px; max-width:800px; }
+  .contact-card{ text-decoration:none; color:var(--text); background:var(--card); border:1px solid var(--line); border-radius:20px; padding:26px 22px; display:flex; flex-direction:column; gap:10px; transition:transform .2s ease, box-shadow .2s ease; }
+  .contact-card:hover{ transform:translateY(-4px); box-shadow:0 12px 30px rgba(255,207,112,0.15); }
+  .contact-card span.ic{ font-size:30px; }
+  .contact-card h4{ font-size:16px; font-weight:800; }
+  .contact-card p{ font-size:13px; color:var(--text-muted); word-break:break-all; }
+
+  footer{ text-align:center; padding:44px 24px; font-size:12px; color:var(--text-muted); border-top:1px solid var(--line); }
+
+  @media (max-width:640px){
+    .nav{ display:none; }
+    .hero{ padding:80px 0 60px; }
   }
-}
-
-/* 고정 내비바 */
-.header{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:74px;
-  z-index:999;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 7%;
-  background:rgba(5,0,20,0.15);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  border-bottom:1px solid rgba(255,255,255,0.08);
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-size:20px;
-  font-weight:900;
-}
-
-.logo a{
-  color:white;
-  text-decoration:none;
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.logo-icon{
-  width:40px;
-  height:40px;
-  border-radius:14px;
-  background:linear-gradient(135deg,#ffd66b,#ff9f3f);
-  color:#16001f;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-}
-
-.nav{
-  display:flex;
-  gap:34px;
-}
-
-.nav a{
-  color:#eadfff;
-  text-decoration:none;
-  font-size:15px;
-  font-weight:800;
-}
-
-.nav a:hover{
-  color:#ffd76d;
-}
-
-/* 섹션 공통 */
-section{
-  min-height:100vh;
-  scroll-margin-top:74px;
-}
-
-.content-section{
-  padding:120px 8%;
-  background:linear-gradient(180deg,#070015,#15072d);
-}
-
-.content-section h2{
-  font-size:46px;
-  color:#ffcf70;
-  margin-bottom:30px;
-}
-
-/* 첫 화면 */
-.hero{
-  width:100%;
-  height:100vh;
-  position:relative;
-  overflow:hidden;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:radial-gradient(circle, rgba(255,205,110,0.08), rgba(8,0,25,0.62));
-  z-index:1;
-}
-
-.universe{
-  width:650px;
-  height:650px;
-  position:relative;
-  z-index:5;
-}
-
-.orbit-line{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:560px;
-  height:560px;
-  transform:translate(-50%,-50%);
-  border:1px solid rgba(255,215,120,0.38);
-  border-radius:50%;
-  box-shadow:0 0 25px rgba(255,190,80,0.25);
-}
-
-.orbit-line.small{
-  width:430px;
-  height:430px;
-  opacity:.45;
-}
-
-.icons-layer{
-  position:absolute;
-  inset:0;
-  animation:spin 180s linear infinite;
-}
-
-.icon-item{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:82px;
-  height:82px;
-  margin:-41px;
-  transform:rotate(var(--angle)) translate(280px) rotate(calc(-1 * var(--angle)));
-}
-
-.icon-box{
-  width:82px;
-  height:82px;
-  border-radius:25px;
-  background:rgba(16,8,44,0.78);
-  border:1px solid rgba(255,220,140,0.55);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 0 25px rgba(255,198,90,0.4);
-  animation:counterSpin 180s linear infinite;
-}
-
-.icon-box img{
-  width:42px;
-  height:42px;
-}
-
-.caption{
-  position:absolute;
-  top:120px;
-  left:50%;
-  transform:translateX(-50%);
-  width:100%;
-  text-align:center;
-  z-index:10;
-}
-
-.caption a{
-  text-decoration:none;
-}
-
-.caption h1{
-  font-size:56px;
-  color:#ffcf70;
-  margin-bottom:14px;
-  text-shadow:0 0 25px rgba(255,207,112,.4);
-}
-
-.caption p{
-   font-size:20px;
-  color:#eee3ff;
-}
-
-@keyframes spin{
-  from{ transform:rotate(0deg); }
-  to{ transform:rotate(360deg); }
-}
-
-@keyframes counterSpin{
-  from{ transform:rotate(0deg); }
-  to{ transform:rotate(-360deg); }
-}
-
-/* About Me */
-.about-visual{
-  text-align:center;
-}
-
-.network-wrap{
-  width:800px;
-  height:520px;
-  max-width:100%;
-  margin:40px auto 30px;
-  position:relative;
-}
-
-.network-lines{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  z-index:1;
-}
-
-.network-lines line{
-  stroke:#ffd76d;
-  stroke-width:2;
-  stroke-linecap:round;
-  stroke-dasharray:8 14;
-  animation:flowLine 4s linear infinite;
-  filter:drop-shadow(0 0 8px rgba(255,215,109,.9));
-  opacity:.75;
-}
-
-.story-core{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:190px;
-  height:190px;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  background:radial-gradient(circle,#3b1b63,#130720 70%);
-  border:1px solid rgba(255,215,109,.65);
-  box-shadow:0 0 45px rgba(255,215,109,.35);
-  z-index:3;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  animation:corePulse 3.5s ease-in-out infinite;
-}
-
-.core-icon{
-  width:56px;
-  height:56px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#ffd66b,#ff9f3f);
-  color:#170020;
-  font-size:30px;
-  font-weight:900;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-bottom:12px;
-}
-
-.story-photo{
-  width:68px;
-  height:68px;
-  border-radius:50%;
-  object-fit:cover;
-  margin-bottom:12px;
-  border:2px solid rgba(255,215,109,.85);
-  box-shadow:0 0 25px rgba(255,215,109,.55);
-}
-
-.story-core h3{
-  color:#ffcf70;
-  font-size:26px;
-  margin-bottom:6px;
-}
-
-.story-core p{
-  font-size:15px;
-  color:#eee3ff;
-}
-
-.node{
-  position:absolute;
-  width:130px;
-  height:130px;
-  border-radius:34px;
-  background:rgba(20,9,54,.82);
-  border:1px solid rgba(255,215,109,.55);
-  box-shadow:0 0 28px rgba(255,198,90,.3);
-  z-index:4;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  cursor:pointer;
-  transition:.35s ease;
-  animation:floatNode 5s ease-in-out infinite;
-}
-
-.node span{
-  font-size:34px;
-}
-
-.node strong{
-  color:#ffcf70;
-  font-size:18px;
-}
-
-.node:hover{
-  transform:scale(1.12);
-  background:rgba(45,20,95,.95);
-  box-shadow:0 0 45px rgba(255,215,109,.65);
-}
-
-.node-ai{ left:50%; top:0; transform:translateX(-50%); }
-.node-music{ left:7%; top:25%; animation-delay:.4s; }
-.node-design{ right:7%; top:25%; animation-delay:.8s; }
-.node-video{ left:16%; bottom:0; animation-delay:1.2s; }
-.node-global{ right:16%; bottom:0; animation-delay:1.6s; }
-
-.about-copy{
-  max-width:760px;
-  margin:0 auto;
-  font-size:20px;
-  line-height:1.8;
-  color:#eee3ff;
-}
-
-@keyframes flowLine{
-  from{ stroke-dashoffset:0; }
-  to{ stroke-dashoffset:-44; }
-}
-
-@keyframes corePulse{
-  0%,100%{
-    transform:translate(-50%,-50%) scale(1);
-    box-shadow:0 0 35px rgba(255,215,109,.28);
-  }
-  50%{
-    transform:translate(-50%,-50%) scale(1.04);
-    box-shadow:0 0 70px rgba(255,215,109,.55);
-  }
-}
-
-@keyframes floatNode{
-  0%,100%{ margin-top:0; }
-  50%{ margin-top:-14px; }
-}
-
-/* Projects 3D 캐러셀 */
-.project-3d-section{
-  text-align:center;
-  overflow:hidden;
-}
-
-
-.project-3d-section .section-desc{
-  color:#eee3ff;
-  font-size:18px;
-  line-height:1.7;
-  margin-top:-10px;
-}
-
-.project-3d-slider{
-  width:100%;
-  height:590px;
-  margin-top:50px;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  perspective:1300px;
-}
-
-.project-3d-track{
-   width:240px;
-  height:340px;
-  position:relative;
-  transform-style:preserve-3d;
-  transition:transform 1.1s cubic-bezier(.45,.05,.2,1);
-   
-}
-
-.project-3d-card{
-   padding:20px 16px;
-  position:absolute;
-  inset:0;
-  border-radius:36px;
-  text-decoration:none;
-  color:white;
-  background:rgba(255,255,255,.09);
-  border:1px solid rgba(255,207,112,.5);
-  box-shadow:0 0 45px rgba(255,207,112,.28);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-
-transform:rotateY(calc(var(--i) * 60deg)) translateZ(500px);translateZ(500px) ;
-  transition:background .35s ease, box-shadow .35s ease, filter .35s ease;
-   opacity:.35;
-  filter:blur(1px);
-  transition:.5s;
-}
-
-
-.project-3d-card.active{
-  opacity:1;
-  filter:none;
-  z-index:100;
-
-  background:rgba(25,15,55,.96);
-
-  border:1px solid rgba(255,207,112,.9);
-
-  box-shadow:
-  0 0 60px rgba(255,207,112,.45),
-  0 0 120px rgba(255,207,112,.25);
-}
-
-.project-3d-card:hover{
-  background:rgba(255,255,255,.14);
-  box-shadow:0 0 65px rgba(255,207,112,.55);
-}
-
-.project-icon{
-    width:56px;
-  height:56px;
-  font-size:28px;
- 
-  border-radius:50%;
-  background:linear-gradient(135deg,#ffd66b,#ff9f3f);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  margin-bottom:22px;
-  box-shadow:0 0 35px rgba(255,207,112,.58);
-}
-
-.project-thumb{
-  width:100%;
-  height:140px;
-  object-fit:cover;
-  border-radius:20px;
-  margin-bottom:16px;
-  border:1px solid rgba(255,207,112,.5);
-  box-shadow:0 0 25px rgba(255,207,112,.3);
-}
-
-.project-3d-card span{
-  color:#ffcf70;
-  font-size:14px;
-  font-weight:900;
-  margin-bottom:14px;
-}
-
-.project-3d-card h3{
-    font-size:22px;
-  color:#fff;
-
-  margin-bottom:14px;
-}
-
-.project-3d-card p{
-  color:#eee3ff;
-  font-size:16px;
-  line-height:1.6;
-}
-
-.project-3d-card strong{
-  color:#ffcf70;
-  font-size:15px;
-  margin-top:16px;
-}
-
-.project-btn{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  border:1px solid rgba(255,207,112,.55);
-  background:rgba(255,255,255,.08);
-  color:#ffcf70;
-  font-size:46px;
-  line-height:52px;
-  cursor:pointer;
-  z-index:20;
-  box-shadow:0 0 30px rgba(255,207,112,.25);
-}
-
-.project-btn:hover{
-  background:rgba(255,255,255,.16);
-}
-
-.project-btn.prev{ left:6%; }
-.project-btn.next{ right:6%; }
-
-.project-dots{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin-top:-35px;
-}
-
-.project-dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  border:0;
-  background:rgba(255,255,255,.35);
-  cursor:pointer;
-}
-
-.project-dot.active{
-  width:30px;
-  border-radius:20px;
-  background:#ffcf70;
-  box-shadow:0 0 15px rgba(255,207,112,.8);
-}
-
-.workflow-circle-section{
-  text-align:center;
-}
-
-.workflow-circle{
-  width:620px;
-  height:620px;
-  max-width:100%;
-  margin:60px auto 0;
-  position:relative;
-}
-
-.workflow-circle::before{
-  content:"";
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:470px;
-  height:470px;
-  transform:translate(-50%,-50%);
-  border:2px dashed rgba(255,207,112,.45);
-  border-radius:50%;
-  box-shadow:0 0 35px rgba(255,207,112,.18);
-  animation:flowOrbit 30s linear infinite;
-}
-
-.workflow-center{
-  position:absolute;
-  left:50%;
-  top:50%;
-  width:190px;
-  height:190px;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  background:radial-gradient(circle,#3b1b63,#12051f 70%);
-  border:1px solid rgba(255,207,112,.65);
-  box-shadow:0 0 55px rgba(255,207,112,.35);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  z-index:5;
-}
-
-.workflow-center h3{
-  color:#ffcf70;
-  font-size:28px;
-  margin-bottom:10px;
-}
-
-.workflow-center p{
-  color:#eee3ff;
-  font-size:14px;
-  line-height:1.6;
-  max-width:150px;
-}
-
-.flow-step{
-  position:absolute;
-  width:135px;
-  height:135px;
-  border-radius:32px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,207,112,.45);
-  box-shadow:0 0 28px rgba(255,207,112,.22);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  transition:.35s ease;
-}
-
-.flow-step span{
-  font-size:34px;
-}
-
-.flow-step h3{
-  color:#ffcf70;
-  font-size:17px;
-}
-
-.flow-step:hover{
-  transform:scale(1.12);
-  background:rgba(255,255,255,.14);
-  box-shadow:0 0 48px rgba(255,207,112,.5);
-}
-
-.flow-1{
-  left:50%;
-  top:0;
-  transform:translateX(-50%);
-}
-
-.flow-2{
-  right:35px;
-  top:150px;
-}
-
-.flow-3{
-  right:95px;
-  bottom:45px;
-}
-
-.flow-4{
-  left:95px;
-  bottom:45px;
-}
-
-.flow-5{
-  left:35px;
-  top:150px;
-}
-
-.flow-1:hover{
-  transform:translateX(-50%) scale(1.12);
-}
-
-@keyframes flowOrbit{
-  from{ transform:translate(-50%,-50%) rotate(0deg); }
-  to{ transform:translate(-50%,-50%) rotate(360deg); }
-}
-
-@media(max-width:768px){
-  .workflow-circle{
-    width:520px;
-    height:520px;
-    transform:scale(.82);
-    transform-origin:top center;
-  }
-
-  .workflow-circle::before{
-    width:390px;
-    height:390px;
-  }
-
-  .flow-step{
-    width:115px;
-    height:115px;
-  }
-
-  .flow-2{
-    right:30px;
-    top:125px;
-  }
-
-  .flow-3{
-    right:70px;
-    bottom:45px;
-  }
-
-  .flow-4{
-    left:70px;
-    bottom:45px;
-  }
-
-  .flow-5{
-    left:30px;
-    top:125px;
-  }
-}
-
-/* Contact */
-.contact-section{
-  text-align:center;
-}
-
-.contact-station{
-  max-width:1000px;
-  margin:60px auto 0;
-}
-
-.station-core{
-  width:260px;
-  height:260px;
-  margin:0 auto 60px;
-  border-radius:50%;
-  background:radial-gradient(circle,#3b1b63,#12051f 70%);
-  border:1px solid rgba(255,207,112,.65);
-  box-shadow:0 0 60px rgba(255,207,112,.35);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  animation:stationPulse 4s ease-in-out infinite;
-}
-
-.station-icon{
-  font-size:50px;
-  margin-bottom:15px;
-}
-
-.station-core h3{
-  color:#ffcf70;
-  font-size:30px;
-  margin-bottom:10px;
-}
-
-.station-core p{
-  color:#eee3ff;
-  font-size:15px;
-  line-height:1.6;
-  max-width:180px;
-}
-
-.contact-links{
-  display:flex;
-  justify-content:center;
-  gap:30px;
-  flex-wrap:wrap;
-}
-
-.contact-card{
-  width:240px;
-  min-height:300px;
-  border-radius:30px;
-  text-decoration:none;
-  color:white;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,207,112,.35);
-  box-shadow:0 0 25px rgba(255,207,112,.18);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:28px 20px;
-  transition:.35s ease;
-}
-
-.contact-card span{
-  font-size:42px;
-  margin-bottom:18px;
-}
-
-.contact-card h4{
-  color:#ffcf70;
-  font-size:22px;
-  margin-bottom:10px;
-}
-
-.contact-card p{
-  color:#eee3ff;
-  font-size:15px;
-}
-
-.contact-thumb{
-  width:100%;
-  height:110px;
-  object-fit:cover;
-  border-radius:18px;
-  margin-top:18px;
-  border:1px solid rgba(255,207,112,.5);
-  box-shadow:0 0 22px rgba(255,207,112,.3);
-}
-
-.contact-card:hover{
-  transform:translateY(-10px);
-  background:rgba(255,255,255,.12);
-  box-shadow:0 0 45px rgba(255,207,112,.45);
-}
-
-@keyframes stationPulse{
-  0%,100%{
-    transform:scale(1);
-    box-shadow:0 0 45px rgba(255,207,112,.25);
-  }
-  50%{
-    transform:scale(1.04);
-    box-shadow:0 0 75px rgba(255,207,112,.55);
-  }
-}
-
-/* 반응형 */
-@media(max-width:900px){
-  .workflow-line{
-    flex-direction:column;
-  }
-
-  .workflow-arrow{
-    transform:rotate(90deg);
-  }
-
-  @keyframes arrowGlow{
-    0%,100%{
-      opacity:.45;
-      transform:rotate(90deg) translateX(0);
-    }
-    50%{
-      opacity:1;
-      transform:rotate(90deg) translateX(6px);
-    }
-  }
-}
-
-@media(max-width:768px){
-  .nav{
-    display:none;
-  }
-
-  .universe{
-    transform:scale(.7);
-  }
-
-  .caption h1{
-    font-size:28px;
-  }
-
-  .content-section{
-    padding:100px 6%;
-  }
-
-  .network-wrap{
-    height:680px;
-  }
-
-  .network-lines{
-    display:none;
-  }
-
-  .story-core{
-    top:48%;
-    width:160px;
-    height:160px;
-  }
-
-  .node{
-    width:112px;
-    height:112px;
-  }
-
-  .node-ai{ top:0; }
-  .node-music{ left:5%; top:22%; }
-  .node-design{ right:5%; top:22%; }
-  .node-video{ left:8%; bottom:5%; }
-  .node-global{ right:8%; bottom:5%; }
-
-  .project-3d-slider{
-    height:520px;
-    perspective:900px;
-  }
-
-  .project-3d-track{
-    width:220px;
-    height:360px;
-  }
-
-  .project-thumb{
-    height:120px;
-  }
-
-  .project-3d-card{
-    transform:rotateY(calc(var(--i) * 60deg)) translateZ(300px);
-  }
-
-  .project-btn{
-    width:46px;
-    height:46px;
-    font-size:36px;
-    line-height:40px;
-  }
-
-  .project-btn.prev{ left:1%; }
-  .project-btn.next{ right:1%; }
-
-  .station-core{
-    width:220px;
-    height:220px;
-  }
-
-  .contact-card{
-    width:100%;
-    max-width:320px;
-  }
-}
-
-/* 오른쪽 하단 섹션 이동 버튼 */
-.scroll-buttons{
-  position:fixed;
-  right:25px;
-  top:50%;
-  transform:translateY(-50%);
-  z-index:9999;
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-}
-
-.scroll-buttons button{
-  width:78px;
-  height:78px;
-  border:none;
-  border-radius:50%;
-  background:rgba(0,0,0,.88);
-  color:white;
-  cursor:pointer;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  box-shadow:0 0 35px rgba(0,0,0,.55);
-}
-
-.scroll-buttons button span{
-  font-size:30px;
-}
-
-.scroll-buttons button small{
-  font-size:16px;
-  font-weight:900;
-  color:white;
-}
-
-@media(max-width:768px){
-  .scroll-buttons{
-    right:16px;
-    bottom:16px;
-  }
-
-  .scroll-buttons button{
-    width:44px;
-    height:44px;
-    font-size:17px;
-  }
-}
-/* 드론 커서 */
-
-body{
-  cursor:none;
-}
-
-#droneCursor{
-  position:fixed;
-
-  left:0;
-  top:0;
-
-  width:60px;
-  height:60px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:38px;
-
-  pointer-events:none;
-
-  z-index:999999;
-
-  transform:translate(-50%,-50%);
-
-  filter:
-    drop-shadow(0 0 10px rgba(255,215,109,.7))
-    drop-shadow(0 0 20px rgba(255,215,109,.6))
-    drop-shadow(0 0 35px rgba(255,215,109,.5));
-
-  animation:
-    droneGlow 2s ease-in-out infinite;
-}
-
-@keyframes droneGlow{
-
-  0%,100%{
-    filter:
-      drop-shadow(0 0 10px rgba(255,215,109,.6))
-      drop-shadow(0 0 20px rgba(255,215,109,.4));
-  }
-
-  50%{
-    filter:
-      drop-shadow(0 0 18px rgba(255,215,109,.9))
-      drop-shadow(0 0 35px rgba(255,215,109,.8))
-      drop-shadow(0 0 55px rgba(255,215,109,.7));
-  }
-
-}
-/* 배경 영상 */
-
-.hero-video{
-  position:absolute;
-  top:0;
-  left:0;
-
-  width:100%;
-  height:100%;
-
-  object-fit:cover;
-
-  z-index:0;
-}
-
-/* 실루엣 */
-
-.hero-silhouette{
-  position:absolute;
-  inset:0;
-
-  background:
-    url("./images/silhouette.png");
-
-  background-size:cover;
-  background-position:center bottom;
-  background-repeat:no-repeat;
-
-  opacity:.25;
-
-  z-index:2;
-}
-
 </style>
 </head>
-
 <body>
 
-<header class="header">
-  <div class="logo">
-    <a href="#home">
-      <div class="logo-icon">D</div>
-      <div>DDMAM PORTFOLIO</div>
-    </a>
-  </div>
+  <header class="header">
+    <div class="page-wrap">
+      <a class="logo" href="#hero">
+        <span class="logo-icon">D</span>
+        <span class="logo-text">DDMAM PORTFOLIO</span>
+      </a>
+      <nav class="nav">
+        <a href="#about">about me</a>
+        <a href="#projects">projects</a>
+        <a href="#contact">contact</a>
+      </nav>
+    </div>
+  </header>
 
-  <nav class="nav">
-    <a href="#about">about me</a>
-    <a href="#projects">projects</a>
-    <a href="#workflow">workflow</a>
-    <a href="#contact">contact</a>
-  </nav>
-</header>
+  <section class="hero" id="hero">
+    <div class="hero-ring r1"></div>
+    <div class="hero-ring r2"></div>
+    <div class="page-wrap">
+      <p class="hero-eyebrow">Bridge Designer</p>
+      <h1>생각을 보여주는<br>Bridge Designer 조민영입니다</h1>
+      <p>AI × Music × Design</p>
+    </div>
+  </section>
 
-<section class="hero" id="home">
-  <!-- 배경 동영상 -->
-  <video
-    class="hero-video"
-    autoplay
-    muted
-    loop
-    playsinline>
+  <section class="section" id="about">
+    <div class="page-wrap">
+      <h2 class="section-title">About Me</h2>
+      <div class="about-body">
+        <p>AI, 음악, 디자인, 영상, 다국어 콘텐츠를 연결해 사람의 이야기가 살아나는 디지털 콘텐츠를 만듭니다. 최근에는 시니어를 위한 AI 감성 아카이브 서비스 "노래한장"을 기획·디자인하며, 기술과 사람 사이의 거리를 좁히는 작업에 집중하고 있습니다.</p>
 
-    <source
-      src="./video/universe.mp4"
-      type="video/mp4">
-
-  </video>
-
-  <!-- 실루엣 -->
-  <div class="hero-silhouette"></div>
-
-  <div class="universe">
-  
-    <div class="orbit-line"></div>
-    <div class="orbit-line small"></div>
-
-    <div class="icons-layer">
-      <div class="icon-item" style="--angle:0deg;">
-        <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:brain.svg?color=%23ffd76d" alt="AI">
-        </div>
-      </div>
-
-      <div class="icon-item" style="--angle:60deg;">
-        <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:microphone.svg?color=%23ffd76d" alt="Music">
-        </div>
-      </div>
-
-      <div class="icon-item" style="--angle:120deg;">
-        <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:laptop.svg?color=%23ffd76d" alt="UX">
-        </div>
-      </div>
-
-      <div class="icon-item" style="--angle:180deg;">
-        <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:pen.svg?color=%23ffd76d" alt="Design">
-        </div>
-      </div>
-
-      <div class="icon-item" style="--angle:240deg;">
-        <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:earth.svg?color=%23ffd76d" alt="Global">
-        </div>
-      </div>
-
-      <div class="icon-item" style="--angle:300deg;">
-        <div class="icon-box">
-          <img src="https://api.iconify.design/mdi:play-circle.svg?color=%23ffd76d" alt="Video">
+        <div>
+          <p class="scan-label">사용하는 도구</p>
+          <div class="tool-grid">
+            <div class="tool-item"><div class="tool-icon"><img src="https://api.iconify.design/simple-icons:adobephotoshop.svg?color=%23FFCF70" alt="포토샵"></div><span class="tool-name">포토샵</span></div>
+            <div class="tool-item"><div class="tool-icon"><img src="https://api.iconify.design/simple-icons:adobeillustrator.svg?color=%23FFCF70" alt="일러스트레이터"></div><span class="tool-name">일러스트레이터</span></div>
+            <div class="tool-item"><div class="tool-icon"><img src="https://api.iconify.design/simple-icons:googlegemini.svg?color=%23FFCF70" alt="제미니"></div><span class="tool-name">제미니</span></div>
+            <div class="tool-item"><div class="tool-icon"><img src="https://api.iconify.design/simple-icons:openai.svg?color=%23FFCF70" alt="챗GPT"></div><span class="tool-name">챗GPT</span></div>
+            <div class="tool-item"><div class="tool-icon"><img src="https://api.iconify.design/simple-icons:anthropic.svg?color=%23FFCF70" alt="클로드"></div><span class="tool-name">클로드</span></div>
+            <div class="tool-item"><div class="tool-icon"><img src="https://api.iconify.design/simple-icons:canva.svg?color=%23FFCF70" alt="캔바"></div><span class="tool-name">캔바</span></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="caption">
-    <a href="#about">
-      <h1>DDMAM CREATIVE UNIVERSE</h1>
-      <p>AI · Music · Design · Global · Video · UX</p>
-    </a>
-  </div>
-</section>
+  <section class="section" id="projects">
+    <div class="page-wrap">
+      <h2 class="section-title">Projects</h2>
+      <p class="section-desc">진행한 프로젝트들을 한눈에 볼 수 있도록 정적으로 배열했습니다. 카드를 클릭하면 각 프로젝트 페이지로 이동합니다.</p>
 
-<section class="content-section about-visual" id="about">
-  <h2>About Me</h2>
+      <div class="project-grid">
 
-  <div class="network-wrap">
-    <svg class="network-lines" viewBox="0 0 800 520">
-      <line x1="400" y1="260" x2="400" y2="70" />
-      <line x1="400" y1="260" x2="170" y2="180" />
-      <line x1="400" y1="260" x2="630" y2="180" />
-      <line x1="400" y1="260" x2="230" y2="420" />
-      <line x1="400" y1="260" x2="570" y2="420" />
-    </svg>
+        <a href="noraehanjang_launch_page.html" target="_blank" class="project-card featured">
+          <div class="project-thumb thumb-song">🎵</div>
+          <div class="project-body">
+            <span class="featured-badge">NEW</span>
+            <span class="project-tag">AI Service · UX</span>
+            <h3>노래한장</h3>
+            <p>사진 한 장으로 노래를 만드는 시니어 감성 아카이브 &amp; Smart LP 플랫폼</p>
+            <span class="project-link">웹사이트 보기 →</span>
+          </div>
+        </a>
 
-    <div class="story-core">
-      <img src="./images/image7.png" alt="내 사진" class="story-photo">
-      <h3>Story</h3>
-      <p>사람의 이야기</p>
+        <a href="#" class="project-card">
+          <div class="project-thumb thumb-1">☕</div>
+          <div class="project-body">
+            <span class="project-tag">Brand UX</span>
+            <h3>Starbucks</h3>
+            <p>브랜드 리디자인</p>
+            <span class="project-link">View Project →</span>
+          </div>
+        </a>
+
+        <a href="#" class="project-card">
+          <div class="project-thumb thumb-2">🏠</div>
+          <div class="project-body">
+            <span class="project-tag">Promotion</span>
+            <h3>Airbnb</h3>
+            <p>서울 프로모션</p>
+            <span class="project-link">View Project →</span>
+          </div>
+        </a>
+
+        <a href="#" class="project-card">
+          <div class="project-thumb thumb-3">🕶</div>
+          <div class="project-body">
+            <span class="project-tag">Branding</span>
+            <h3>GoldenFit</h3>
+            <p>선글라스 브랜드</p>
+            <span class="project-link">View Project →</span>
+          </div>
+        </a>
+
+        <a href="#" class="project-card">
+          <div class="project-thumb thumb-4">🥗</div>
+          <div class="project-body">
+            <span class="project-tag">AI Service</span>
+            <h3>CoolFriends</h3>
+            <p>AI 냉장고 UX</p>
+            <span class="project-link">View Project →</span>
+          </div>
+        </a>
+
+        <a href="#" class="project-card">
+          <div class="project-thumb thumb-5">🎬</div>
+          <div class="project-body">
+            <span class="project-tag">AI Video</span>
+            <h3>Music Video</h3>
+            <p>AI 뮤직비디오</p>
+            <span class="project-link">Watch Video →</span>
+          </div>
+        </a>
+
+        <a href="https://youtube.com/@디디맘의노래선물" target="_blank" class="project-card">
+          <div class="project-thumb thumb-6">📺</div>
+          <div class="project-body">
+            <span class="project-tag">YouTube</span>
+            <h3>YouTube 채널</h3>
+            <p>콘텐츠 채널</p>
+            <span class="project-link">Go Channel →</span>
+          </div>
+        </a>
+
+      </div>
     </div>
+  </section>
 
-    <div class="node node-ai">
-      <span>🤖</span>
-      <strong>AI</strong>
+  <section class="section" id="contact">
+    <div class="page-wrap">
+      <h2 class="section-title">Contact</h2>
+      <p class="section-desc">새로운 프로젝트와 협업을 기다립니다.</p>
+
+      <div class="contact-grid">
+        <a href="mailto:jominyeongg@gmail.com" class="contact-card">
+          <span class="ic">📧</span>
+          <h4>Email</h4>
+          <p>jominyeongg@gmail.com</p>
+        </a>
+        <a href="https://youtube.com/@디디맘의노래선물" target="_blank" class="contact-card">
+          <span class="ic">📺</span>
+          <h4>YouTube</h4>
+          <p>Channel Visit</p>
+        </a>
+        <a href="https://ddmom.github.io/newportfolio/" target="_blank" class="contact-card">
+          <span class="ic">💻</span>
+          <h4>Portfolio</h4>
+          <p>View Projects</p>
+        </a>
+      </div>
     </div>
+  </section>
 
-    <div class="node node-music">
-      <span>🎤</span>
-      <strong>Music</strong>
-    </div>
-
-    <div class="node node-design">
-      <span>🎨</span>
-      <strong>Design</strong>
-    </div>
-
-    <div class="node node-video">
-      <span>▶️</span>
-      <strong>Video</strong>
-    </div>
-
-    <div class="node node-global">
-      <span>🌏</span>
-      <strong>Global</strong>
-    </div>
-  </div>
-
-  <p class="about-copy">
-    AI, 음악, 디자인, 영상, 다국어 콘텐츠를 연결해 사람의 이야기가 살아나는 디지털 콘텐츠를 만듭니다.
-  </p>
-</section>
-
-<section class="content-section project-3d-section" id="projects">
-  <h2>Projects</h2>
-  <p class="section-desc">모든 프로젝트를 입체적으로 보여주고, 가운데 카드에서 잠시 멈추도록 구성했습니다.</p>
-
-  <div class="project-3d-slider" id="projectSlider">
-    <button class="project-btn prev" type="button" onclick="prevProject()">‹</button>
-
-    <div class="project-3d-track" id="projectTrack">
-      <a href="#" class="project-3d-card" style="--i:0;">
-        <img src="./images/image1.png" alt="Starbucks 브랜드 리디자인 결과물" class="project-thumb">
-        <span>Brand UX</span>
-        <h3>Starbucks</h3>
-        <p>브랜드 리디자인</p>
-        <strong>View Project →</strong>
-      </a>
-
-      <a href="#" class="project-3d-card" style="--i:1;">
-        <img src="./images/image2.png" alt="Airbnb 서울 프로모션 결과물" class="project-thumb">
-        <span>Promotion</span>
-        <h3>Airbnb</h3>
-        <p>서울 프로모션</p>
-        <strong>View Project →</strong>
-      </a>
-
-      <a href="#" class="project-3d-card" style="--i:2;">
-        <img src="./images/image3.png" alt="GoldenFit 선글라스 브랜딩 결과물" class="project-thumb">
-        <span>Branding</span>
-        <h3>GoldenFit</h3>
-        <p>선글라스 브랜드</p>
-        <strong>View Project →</strong>
-      </a>
-
-      <a href="#" class="project-3d-card" style="--i:3;">
-        <img src="./images/image4.png" alt="CoolFriends AI 냉장고 UX 결과물" class="project-thumb">
-        <span>AI Service</span>
-        <h3>CoolFriends</h3>
-        <p>AI 냉장고 UX</p>
-        <strong>View Project →</strong>
-      </a>
-
-      <a href="#" class="project-3d-card" style="--i:4;">
-        <img src="./images/image5.png" alt="AI 뮤직비디오 결과물" class="project-thumb">
-        <span>AI Video</span>
-        <h3>Music Video</h3>
-        <p>AI 뮤직비디오</p>
-        <strong>Watch Video →</strong>
-      </a>
-
-      <a href="https://youtube.com/@디디맘의노래선물" target="_blank" class="project-3d-card" style="--i:5;">
-        <img src="./images/image6.png" alt="YouTube 콘텐츠 채널 썸네일" class="project-thumb">
-        <span>YouTube</span>
-        <h3>YouTube</h3>
-        <p>콘텐츠 채널</p>
-        <strong>Go Channel →</strong>
-      </a>
-    </div>
-
-    <button class="project-btn next" type="button" onclick="nextProject()">›</button>
-  </div>
-
-  <div class="project-dots">
-    <button class="project-dot active" type="button" onclick="goProject(0)"></button>
-    <button class="project-dot" type="button" onclick="goProject(1)"></button>
-    <button class="project-dot" type="button" onclick="goProject(2)"></button>
-    <button class="project-dot" type="button" onclick="goProject(3)"></button>
-    <button class="project-dot" type="button" onclick="goProject(4)"></button>
-    <button class="project-dot" type="button" onclick="goProject(5)"></button>
-  </div>
-</section>
-
-<section class="content-section workflow-circle-section" id="workflow">
-  <h2>Workflow</h2>
-
-  <div class="workflow-circle">
-
-    <div class="workflow-center">
-      <h3>Feedback</h3>
-      <p>산출물이 다시 기획으로 연결됩니다</p>
-    </div>
-
-    <div class="flow-step flow-1">
-      <span>📝</span>
-      <h3>기획</h3>
-    </div>
-
-    <div class="flow-step flow-2">
-      <span>🖼️</span>
-      <h3>이미지 생성</h3>
-    </div>
-
-    <div class="flow-step flow-3">
-      <span>🎬</span>
-      <h3>영상 구성</h3>
-    </div>
-
-    <div class="flow-step flow-4">
-      <span>✂️</span>
-      <h3>자막/편집</h3>
-    </div>
-
-    <div class="flow-step flow-5">
-      <span>🌐</span>
-      <h3>포트폴리오 적용</h3>
-    </div>
-
-  </div>
-</section>
-
-<section class="content-section contact-section" id="contact">
-  <h2>Contact</h2>
-
-  <div class="contact-station">
-    <div class="station-core">
-      <div class="station-icon">🚀</div>
-      <h3>Let's Connect</h3>
-      <p>새로운 프로젝트와 협업을 기다립니다.</p>
-    </div>
-
-    <div class="contact-links">
-      <a href="mailto:jominyeongg@gmail.com" class="contact-card">
-        <span>📧</span>
-        <h4>Email</h4>
-        <p>jominyeongg@gmail.com</p>
-        <img src="./images/image7.png" alt="내 사진" class="contact-thumb">
-      </a>
-
-      <a href="https://youtube.com/@디디맘의노래선물" target="_blank" class="contact-card">
-        <span>📺</span>
-        <h4>YouTube</h4>
-        <p>Channel Visit</p>
-        <img src="./images/image6.png" alt="YouTube 채널 썸네일" class="contact-thumb">
-      </a>
-
-      <a href="https://ddmom.github.io/newportfolio/" target="_blank" class="contact-card">
-        <span>💻</span>
-        <h4>Portfolio</h4>
-        <p>View Projects</p>
-        <img src="./images/image8.png" alt="포트폴리오 사진" class="contact-thumb">
-      </a>
-    </div>
-  </div>
-</section>
-<div class="scroll-buttons">
-  <button id="upBtn" onclick="moveSection(-1)">
-    <span>🚀</span>
-    <small>UP</small>
-  </button>
-
-  <button id="downBtn" onclick="moveSection(1)">
-    <span>🌌</span>
-    <small>DOWN</small>
-  </button>
-</div>
-
-<div id="droneCursor">🚁</div>
-
-
-<script>
-/* 프로젝트 3D 슬라이더 */
-const projectTrack = document.getElementById("projectTrack");
-const projectSlider = document.getElementById("projectSlider");
-const projectDots = document.querySelectorAll(".project-dot");
-const projectCards = document.querySelectorAll(".project-3d-card");
-
-let projectIndex = 0;
-const totalProjects = projectCards.length;
-let autoProject;
-let wheelLock = false;
-
-function updateProject(){
-  projectTrack.style.transform = `rotateY(${-projectIndex * 60}deg)`;
-
-  projectDots.forEach((dot, index)=>{
-    dot.classList.toggle("active", index === projectIndex);
-  });
-
-  projectCards.forEach((card, index)=>{
-    card.classList.toggle("active", index === projectIndex);
-  });
-}
-
-function nextProject(){
-  projectIndex = (projectIndex + 1) % totalProjects;
-  updateProject();
-  resetAutoProject();
-}
-
-function prevProject(){
-  projectIndex = (projectIndex - 1 + totalProjects) % totalProjects;
-  updateProject();
-  resetAutoProject();
-}
-
-function goProject(index){
-  projectIndex = index;
-  updateProject();
-  resetAutoProject();
-}
-
-function startAutoProject(){
-  autoProject = setInterval(()=>{
-    projectIndex = (projectIndex + 1) % totalProjects;
-    updateProject();
-  }, 7200);
-}
-
-function resetAutoProject(){
-  clearInterval(autoProject);
-  startAutoProject();
-}
-
-projectSlider.addEventListener("wheel", function(event){
-  event.preventDefault();
-
-  if(wheelLock) return;
-  wheelLock = true;
-
-  if(event.deltaY > 0){
-    nextProject();
-  }else{
-    prevProject();
-  }
-
-  setTimeout(()=>{
-    wheelLock = false;
-  }, 900);
-}, { passive:false });
-
-projectSlider.addEventListener("mouseenter", ()=>{
-  clearInterval(autoProject);
-});
-
-projectSlider.addEventListener("mouseleave", ()=>{
-  startAutoProject();
-});
-
-updateProject();
-startAutoProject();
-
-
-/* 오른쪽 UP / DOWN 섹션 이동 */
-const sections = ["home","about","projects","workflow","contact"];
-
-function getCurrentSectionIndex(){
-  let currentIndex = 0;
-
-  sections.forEach((id,index)=>{
-    const section = document.getElementById(id);
-    const rect = section.getBoundingClientRect();
-
-    if(rect.top <= window.innerHeight / 2){
-      currentIndex = index;
-    }
-  });
-
-  return currentIndex;
-}
-
-function moveSection(direction){
-  let currentIndex = getCurrentSectionIndex();
-  let nextIndex = currentIndex + direction;
-
-  if(nextIndex < 0) nextIndex = 0;
-  if(nextIndex >= sections.length) nextIndex = sections.length - 1;
-
-  document.getElementById(sections[nextIndex]).scrollIntoView({
-    behavior:"smooth"
-  });
-
-  setTimeout(updateScrollButtons, 700);
-}
-
-function updateScrollButtons(){
-  const currentIndex = getCurrentSectionIndex();
-
-  const upBtn = document.getElementById("upBtn");
-  const downBtn = document.getElementById("downBtn");
-
-  if(!upBtn || !downBtn) return;
-
-  upBtn.style.display = currentIndex === 0 ? "none" : "flex";
-  downBtn.style.display = currentIndex === sections.length - 1 ? "none" : "flex";
-}
-
-window.addEventListener("scroll", updateScrollButtons);
-window.addEventListener("load", updateScrollButtons);
-
-
-
-/* 드론 커서 */
-
-/* 드론 커서 */
-
-const drone = document.getElementById("droneCursor");
-
-let droneX = window.innerWidth / 2;
-let droneY = window.innerHeight / 2;
-
-let mouseX = droneX;
-let mouseY = droneY;
-
-let trailCount = 0;
-
-document.addEventListener("mousemove", (e)=>{
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-function createDroneTrail(x, y){
-
-  trailCount++;
-
-  if(trailCount % 4 !== 0) return;
-
-  const trail = document.createElement("div");
-  trail.className = "drone-trail";
-
-  trail.style.left = (x - 18) + "px";
-  trail.style.top = (y + 16) + "px";
-
-  document.body.appendChild(trail);
-
-  setTimeout(()=>{
-    trail.remove();
-  }, 900);
-}
-
-function animateDrone(){
-
-  droneX += (mouseX - droneX) * 0.08;
-  droneY += (mouseY - droneY) * 0.08;
-
-  drone.style.left = droneX + "px";
-  drone.style.top = droneY + "px";
-
-  createDroneTrail(droneX, droneY);
-
-  requestAnimationFrame(animateDrone);
-}
-
-animateDrone();
-function animateDrone(){
-
-  droneX +=
-    (mouseX - droneX) * 0.08;
-
-  droneY +=
-    (mouseY - droneY) * 0.08;
-
-  drone.style.left =
-    droneX + "px";
-
-  drone.style.top =
-    droneY + "px";
-    createDroneTrail(droneX, droneY);
-
-  requestAnimationFrame(
-    animateDrone
-  );
-
-}
-
-animateDrone();
-
-
-
-</script>
+  <footer>© 2026 DDMAM Portfolio. All projects are personal or academic work.</footer>
 
 </body>
 </html>

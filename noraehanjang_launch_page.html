@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>노래한장 — 런칭 페이지</title>
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-soft:#F6F6F8;
+    --card:#FFFFFF;
+    --ink:#17171A;
+    --ink-muted:#6B6B72;
+    --coral:#FF5A46;
+    --coral-deep:#E14631;
+    --coral-soft:#FFE7E2;
+    --teal:#12C7A6;
+    --teal-deep:#0EA98D;
+    --teal-soft:#DFF9F3;
+    --line:#EAEAEE;
+    --nav-h:64px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{ scroll-behavior:smooth; }
+  body{ font-family:"Pretendard","Noto Sans KR",-apple-system,sans-serif; background:var(--bg); color:var(--ink); }
+
+  .page-wrap{ max-width:1120px; margin:0 auto; padding:0 24px; }
+
+  /* ---------- 네비게이션 ---------- */
+  .navbar{ position:sticky; top:0; z-index:50; height:var(--nav-h); background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); border-bottom:1px solid var(--line); }
+  .navbar .page-wrap{ height:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .nav-logo{ font-size:20px; font-weight:800; color:var(--ink); white-space:nowrap; letter-spacing:-0.5px; }
+  .nav-links{ display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; }
+  .nav-links::-webkit-scrollbar{ display:none; }
+  .nav-links a{ font-size:14px; font-weight:600; color:var(--ink-muted); text-decoration:none; padding:8px 12px; border-radius:999px; white-space:nowrap; }
+  .nav-links a:hover, .nav-links a:focus-visible{ background:var(--coral-soft); color:var(--coral-deep); }
+  .nav-cta{ background:var(--coral); color:#fff; font-size:13px; font-weight:700; padding:9px 18px; border-radius:999px; text-decoration:none; white-space:nowrap; }
+
+  /* ---------- 히어로 ---------- */
+  .hero{ padding:64px 0 60px; scroll-margin-top:var(--nav-h); }
+  .hero .page-wrap{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:28px; }
+  .hero-eyebrow{ display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:var(--teal-deep); background:var(--teal-soft); padding:6px 14px; border-radius:999px; }
+  .hero-title{ font-size:clamp(32px,5.5vw,50px); font-weight:800; color:var(--ink); line-height:1.28; letter-spacing:-1px; }
+  .hero-title .accent{ color:var(--coral); }
+  .hero-sub{ font-size:17px; color:var(--ink-muted); max-width:440px; line-height:1.7; }
+  .hero-cta{ display:inline-flex; align-items:center; gap:8px; background:var(--ink); color:#fff; font-size:16px; font-weight:700; padding:16px 30px; border-radius:999px; text-decoration:none; }
+  .hero-visual{ position:relative; width:220px; height:220px; flex-shrink:0; }
+  .hv-outer{ position:absolute; inset:0; border-radius:50%; background:var(--coral); }
+  .hv-mid{ position:absolute; inset:28px; border-radius:50%; background:#fff; }
+  .hv-center{ position:absolute; inset:74px; border-radius:50%; background:var(--teal); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; color:#fff; text-align:center; line-height:1.3; }
+  .hv-dot{ position:absolute; width:20px; height:20px; border-radius:50%; background:var(--teal); top:12px; right:6px; }
+
+  /* ---------- 섹션 공통 ---------- */
+  .scr-section{ padding:64px 0; scroll-margin-top:var(--nav-h); }
+  .scr-section:nth-of-type(odd){ background:var(--bg-soft); }
+  .section-head{ text-align:center; max-width:520px; margin:0 auto 40px; }
+  .section-eyebrow{ display:inline-block; font-size:13px; font-weight:700; letter-spacing:1px; color:var(--coral-deep); background:var(--coral-soft); padding:5px 12px; border-radius:999px; margin-bottom:12px; }
+  .section-title{ font-size:26px; font-weight:800; color:var(--ink); margin-bottom:10px; letter-spacing:-0.5px; }
+  .section-desc{ font-size:15px; color:var(--ink-muted); line-height:1.7; }
+
+  .section-inner{ display:flex; flex-direction:column; gap:36px; align-items:center; }
+  .section-text{ text-align:center; max-width:420px; }
+  .section-points{ list-style:none; display:flex; flex-direction:column; gap:10px; text-align:left; margin-top:18px; }
+  .section-points li{ font-size:14px; color:var(--ink); line-height:1.6; padding-left:20px; position:relative; }
+  .section-points li::before{ content:""; position:absolute; left:0; top:8px; width:6px; height:6px; border-radius:50%; background:var(--coral); }
+
+  /* ---------- 제작 과정 ---------- */
+  .orbit-wrap{ display:none; }
+  .steps-mobile{ display:flex; flex-direction:column; gap:14px; max-width:420px; margin:0 auto; }
+  .step-row{ display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 18px; }
+  .step-num{ width:34px; height:34px; border-radius:50%; background:var(--coral-soft); color:var(--coral-deep); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; flex-shrink:0; }
+  .step-row:nth-child(even) .step-num{ background:var(--teal-soft); color:var(--teal-deep); }
+  .step-row .step-label{ font-size:14px; color:var(--ink); font-weight:600; }
+
+  /* ---------- 디바이스 프레임 ---------- */
+  .device-frame{ width:100%; max-width:340px; background:var(--card); border-radius:28px; padding:32px 22px; display:flex; flex-direction:column; align-items:center; gap:16px; min-height:520px; border:1px solid var(--line); box-shadow:0 2px 12px rgba(23,23,26,0.04); transition: box-shadow .25s ease, transform .25s ease; }
+  .device-frame:hover{ box-shadow:0 14px 34px rgba(255,90,70,0.18); transform: translateY(-4px); }
+  .frame-logo{ font-size:18px; font-weight:800; color:var(--ink); }
+  .prompt-text{ font-size:16px; font-weight:700; color:var(--ink); text-align:center; line-height:1.6; }
+  .spacer{ flex:1; }
+  .hint-text{ font-size:12px; color:var(--ink-muted); text-align:center; line-height:1.6; }
+
+  .vinyl-frame{ position:relative; width:160px; height:160px; display:flex; align-items:center; justify-content:center; }
+  .vf-outer{ position:absolute; inset:0; border-radius:50%; background:var(--coral-soft); border:2px dashed var(--coral); }
+  .photo-preview{ position:absolute; width:160px; height:160px; border-radius:50%; object-fit:cover; display:none; }
+  .photo-btn{ position:relative; width:88px; height:88px; border-radius:50%; background:var(--coral); border:4px solid #fff; box-shadow:0 6px 16px rgba(255,90,70,0.35); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; cursor:pointer; font-family:inherit; }
+  .photo-btn .icon{ font-size:22px; color:#fff; }
+  .photo-btn .label{ font-size:12px; color:#fff; font-weight:700; }
+  .hidden-input{ position:absolute; width:1px; height:1px; opacity:0; overflow:hidden; }
+
+  .cta-btn{ width:100%; padding:15px 20px; border-radius:14px; background:var(--ink); color:#fff; border:none; font-family:inherit; font-size:15px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:opacity .2s ease, transform .15s ease; }
+  .cta-btn:active{ transform:scale(0.98); }
+  .cta-btn.pending{ opacity:.3; pointer-events:none; }
+
+  .photo-chip{ display:flex; align-items:center; gap:10px; background:var(--bg-soft); border-radius:999px; padding:6px 16px 6px 6px; }
+  .photo-chip img{ width:34px; height:34px; border-radius:50%; object-fit:cover; border:2px solid var(--teal); }
+  .photo-chip span{ font-size:12px; color:var(--ink-muted); font-weight:600; }
+  .lyrics-card{ width:100%; background:var(--teal-soft); border-radius:16px; padding:20px 18px; }
+  .lyrics-body{ font-size:15px; font-weight:600; line-height:1.9; color:var(--ink); white-space:pre-line; }
+  .info-row{ display:flex; align-items:center; gap:8px; background:var(--coral-soft); border-radius:12px; padding:11px 14px; width:100%; }
+  .info-row .text{ font-size:12px; color:var(--coral-deep); font-weight:600; line-height:1.5; }
+
+  .candidates{ display:flex; gap:14px; justify-content:center; }
+  .candidate{ display:flex; flex-direction:column; align-items:center; gap:8px; background:none; border:none; font-family:inherit; cursor:pointer; padding:4px; border-radius:16px; }
+  .vinyl{ position:relative; width:96px; height:96px; }
+  .vinyl-outer{ position:absolute; inset:0; border-radius:50%; }
+  #confirm-vinyl1 .vinyl-outer{ background:var(--coral); }
+  #confirm-vinyl2 .vinyl-outer{ background:var(--teal); }
+  .vinyl-label{ position:absolute; inset:24px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; font-size:16px; color:var(--ink); }
+  .selected-ring{ position:absolute; inset:-6px; border-radius:50%; border:3px solid var(--ink); opacity:0; transition:opacity .2s ease; }
+  .candidate.selected .selected-ring{ opacity:1; }
+  .check-badge{ position:absolute; top:-4px; right:-4px; width:20px; height:20px; border-radius:50%; background:var(--ink); border:2px solid #fff; display:none; align-items:center; justify-content:center; font-size:10px; color:#fff; }
+  .candidate.selected .check-badge{ display:flex; }
+  .vinyl.playing .vinyl-outer{ animation: spin 3s linear infinite; }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+  .candidate-label{ font-size:12px; color:var(--ink); font-weight:700; }
+  .candidate-sub{ font-size:11px; color:var(--ink-muted); }
+  .retry-link{ background:none; border:none; font-family:inherit; font-size:12px; color:var(--ink-muted); text-decoration:underline; text-underline-offset:3px; cursor:pointer; font-weight:600; }
+
+  footer{ text-align:center; padding:40px 24px; font-size:12px; color:var(--ink-muted); }
+
+  /* ---------- 우측 고정 이동 버튼 ---------- */
+  .jump-buttons{ position:fixed; right:20px; top:50%; transform:translateY(-50%); z-index:60; display:flex; flex-direction:column; gap:10px; }
+  .jump-buttons button{ width:44px; height:44px; border-radius:50%; border:none; background:var(--ink); color:#fff; font-size:16px; cursor:pointer; box-shadow:0 4px 14px rgba(23,23,26,0.25); transition:transform .15s ease, background .2s ease; }
+  .jump-buttons button:hover{ transform:scale(1.08); background:var(--coral); }
+  .jump-buttons button:focus-visible{ outline:3px solid var(--coral); outline-offset:2px; }
+
+  /* ================= 데스크톱 ================= */
+  @media (min-width: 900px){
+    .nav-links a{ font-size:15px; }
+
+    .hero .page-wrap{ flex-direction:row; text-align:left; align-items:center; justify-content:space-between; gap:60px; padding:30px 0; }
+    .hero-sub{ margin:0; }
+    .hero-text{ max-width:500px; display:flex; flex-direction:column; gap:20px; align-items:flex-start; }
+    .hero-visual{ width:300px; height:300px; }
+    .hv-center{ inset:100px; font-size:16px; }
+    .hv-dot{ width:26px; height:26px; top:20px; right:10px; }
+
+    .scr-section{ padding:100px 0; }
+    .section-inner{ flex-direction:row; align-items:center; justify-content:space-between; gap:70px; text-align:left; }
+    .section-inner.reverse{ flex-direction:row-reverse; }
+    .section-text{ text-align:left; max-width:400px; }
+
+    .steps-mobile{ display:none; }
+    .orbit-wrap{ display:block; width:520px; height:520px; position:relative; margin:0 auto; }
+    .orbit-ring{ position:absolute; inset:50px; border:2px dashed var(--line); border-radius:50%; }
+    .orbit-hub{ position:absolute; left:50%; top:50%; width:170px; height:170px; margin:-85px; border-radius:50%; background:var(--ink); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; box-shadow:0 10px 30px rgba(23,23,26,0.2); }
+    .orbit-hub .hub-title{ font-size:20px; font-weight:800; color:#fff; }
+    .orbit-hub .hub-sub{ font-size:11px; color:var(--coral); text-align:center; max-width:120px; line-height:1.5; font-weight:600; }
+    .orbit-item{ position:absolute; left:50%; top:50%; width:118px; height:118px; margin:-59px; transform: rotate(var(--angle)) translate(220px) rotate(calc(-1 * var(--angle))); }
+    .orbit-node{ width:100%; height:100%; border-radius:22px; background:var(--card); border:1px solid var(--line); box-shadow:0 4px 16px rgba(23,23,26,0.06); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:10px; transition:transform .2s ease, box-shadow .2s ease; }
+    .orbit-node:hover{ transform:scale(1.08); box-shadow:0 12px 28px rgba(255,90,70,0.3); }
+    .orbit-node .step-num{ width:26px; height:26px; font-size:12px; }
+    .orbit-node .step-label{ font-size:12px; text-align:center; line-height:1.4; font-weight:700; }
+
+    footer{ padding:56px 24px; }
+  }
+
+  @media (max-width: 640px){
+    .jump-buttons{ right:12px; gap:8px; }
+    .jump-buttons button{ width:38px; height:38px; font-size:14px; }
+  }
+</style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="page-wrap">
+      <span class="nav-logo">노래한장</span>
+      <div class="nav-links">
+        <a href="#hero">소개</a>
+        <a href="#process">제작 과정</a>
+        <a href="#screen-home">01 사진 선택</a>
+        <a href="#screen-lyrics">02 가사 확인</a>
+        <a href="#screen-confirm">03 완성곡 컨펌</a>
+      </div>
+      <a class="nav-cta" href="#screen-home">체험하기</a>
+    </div>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="page-wrap">
+      <div class="hero-text">
+        <span class="hero-eyebrow">AI 감성 아카이브 · Smart LP</span>
+        <h1 class="hero-title">당신의 목소리가<br><span class="accent">가장 귀한 앨범</span>이 됩니다</h1>
+        <p class="hero-sub">사진 한 장과 짧은 이야기만으로, 세상에 하나뿐인 노래와 실물 LP 굿즈를 만들어드립니다.</p>
+        <a class="hero-cta" href="#screen-home"><span>지금 체험해보기</span><span aria-hidden="true">→</span></a>
+      </div>
+      <div class="hero-visual">
+        <div class="hv-outer"></div>
+        <div class="hv-mid"></div>
+        <div class="hv-center">노래<br>한장</div>
+        <div class="hv-dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 제작 과정 -->
+  <section class="scr-section" id="process">
+    <div class="page-wrap">
+      <div class="section-head">
+        <span class="section-eyebrow">HOW IT WORKS</span>
+        <h2 class="section-title">제작 과정 한눈에 보기</h2>
+        <p class="section-desc">사진 한 장에서 실물 LP 굿즈가 되기까지, 여섯 단계를 거칩니다.</p>
+      </div>
+
+      <div class="steps-mobile">
+        <div class="step-row"><span class="step-num">1</span><span class="step-label">사진 선택</span></div>
+        <div class="step-row"><span class="step-num">2</span><span class="step-label">사연 녹음</span></div>
+        <div class="step-row"><span class="step-num">3</span><span class="step-label">가사 확인</span></div>
+        <div class="step-row"><span class="step-num">4</span><span class="step-label">AI 작곡 · 편집</span></div>
+        <div class="step-row"><span class="step-num">5</span><span class="step-label">완성곡 컨펌</span></div>
+        <div class="step-row"><span class="step-num">6</span><span class="step-label">굿즈 제작 · 배송</span></div>
+      </div>
+
+      <div class="orbit-wrap">
+        <div class="orbit-ring"></div>
+        <div class="orbit-hub">
+          <div class="hub-title">노래한장</div>
+          <div class="hub-sub">사진 한 장이 노래가 되는 여정</div>
+        </div>
+        <div class="orbit-item" style="--angle:0deg;"><div class="orbit-node"><span class="step-num">1</span><span class="step-label">사진 선택</span></div></div>
+        <div class="orbit-item" style="--angle:60deg;"><div class="orbit-node"><span class="step-num">2</span><span class="step-label">사연 녹음</span></div></div>
+        <div class="orbit-item" style="--angle:120deg;"><div class="orbit-node"><span class="step-num">3</span><span class="step-label">가사 확인</span></div></div>
+        <div class="orbit-item" style="--angle:180deg;"><div class="orbit-node"><span class="step-num">4</span><span class="step-label">AI 작곡 · 편집</span></div></div>
+        <div class="orbit-item" style="--angle:240deg;"><div class="orbit-node"><span class="step-num">5</span><span class="step-label">완성곡 컨펌</span></div></div>
+        <div class="orbit-item" style="--angle:300deg;"><div class="orbit-node"><span class="step-num">6</span><span class="step-label">굿즈 제작 · 배송</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 홈 화면 -->
+  <section class="scr-section" id="screen-home">
+    <div class="page-wrap">
+      <div class="section-inner">
+        <div class="section-text">
+          <span class="section-eyebrow">01</span>
+          <h2 class="section-title">사진으로 시작하기</h2>
+          <p class="section-desc">소중한 사진 한 장을 고르면, 그 사진이 자연스럽게 이야기를 이끌어냅니다.</p>
+          <ul class="section-points">
+            <li>빈 화면 앞의 막막함 대신, 사진이 먼저 말을 걸어줍니다</li>
+            <li>회원가입 없이 버튼 하나로 바로 시작</li>
+            <li>갤러리 접근 권한은 꼭 필요한 순간에만 요청합니다</li>
+          </ul>
+        </div>
+        <div class="device-frame">
+          <div class="frame-logo">노래한장</div>
+          <p class="prompt-text">소중한 사진 한 장을<br>골라주세요</p>
+          <div class="spacer"></div>
+          <div class="vinyl-frame">
+            <div class="vf-outer"></div>
+            <img id="home-photoPreview" class="photo-preview" alt="선택한 사진">
+            <label class="photo-btn" for="home-photoInput">
+              <span class="icon" aria-hidden="true">🖼</span>
+              <span class="label" id="home-photoBtnLabel">고르기</span>
+            </label>
+            <input class="hidden-input" type="file" id="home-photoInput" accept="image/*">
+          </div>
+          <p class="hint-text" id="home-hintText">손주 재롱잔치, 여행, 가족사진…<br>어떤 사진이든 좋아요</p>
+          <button class="cta-btn pending" id="home-nextBtn" type="button">
+            <span>이 사진으로 이야기 들려주기</span><span aria-hidden="true">→</span>
+          </button>
+          <div class="spacer"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 가사 미리보기 -->
+  <section class="scr-section" id="screen-lyrics">
+    <div class="page-wrap">
+      <div class="section-inner reverse">
+        <div class="section-text">
+          <span class="section-eyebrow">02</span>
+          <h2 class="section-title">가사 확인하기</h2>
+          <p class="section-desc">사연을 말하고 나면, 바로 가사로 만들어져 돌아옵니다.</p>
+          <ul class="section-points">
+            <li>제출 직후 즉시 결과를 확인할 수 있어 기다림이 지루하지 않습니다</li>
+            <li>수정 없이 바로 다음 단계로, 부담을 줄인 단순한 흐름</li>
+            <li>실제 노래는 이후 3~5일간 정성껏 제작됩니다</li>
+          </ul>
+        </div>
+        <div class="device-frame">
+          <div class="frame-logo">노래한장</div>
+          <div class="photo-chip">
+            <img src="https://images.unsplash.com/photo-1520880867055-1e30d1cb001c?w=100&h=100&fit=crop" alt="선택한 사진">
+            <span>이 사진으로 이야기를 들었어요</span>
+          </div>
+          <p class="prompt-text">이런 가사로<br>노래가 만들어질 거예요</p>
+          <div class="lyrics-card">
+            <p class="lyrics-body">작은 손 흔들며 웃던 그 날
+무대 위에 서서 노래하던 너
+서툰 몸짓도 눈부시던 순간
+할머니 마음에 별처럼 담겼네</p>
+          </div>
+          <div class="spacer"></div>
+          <div class="info-row"><span class="text">노래 제작에는 3~5일 정도 걸려요. 완성되면 알려드릴게요.</span></div>
+          <button class="cta-btn" type="button" onclick="alert('제작 대기 화면으로 이동합니다.')">
+            <span>노래 제작 시작하기</span><span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 완성곡 컨펌 -->
+  <section class="scr-section" id="screen-confirm">
+    <div class="page-wrap">
+      <div class="section-inner">
+        <div class="section-text">
+          <span class="section-eyebrow">03</span>
+          <h2 class="section-title">완성곡 고르기</h2>
+          <p class="section-desc">완성된 두 곡 중, 가장 마음에 드는 노래를 골라주세요.</p>
+          <ul class="section-points">
+            <li>직접 듣고 고르는 마지막 확인 단계</li>
+            <li>마음에 안 들면 언제든 다시 요청할 수 있는 안전장치</li>
+            <li>승인 후 바로 실물 LP 굿즈 제작으로 이어집니다</li>
+          </ul>
+        </div>
+        <div class="device-frame">
+          <div class="frame-logo">노래한장</div>
+          <p class="prompt-text">노래가 완성됐어요<br>마음에 드는 곡을 골라주세요</p>
+          <div class="spacer"></div>
+          <div class="candidates">
+            <button class="candidate" id="confirm-cand1" data-id="1">
+              <div class="vinyl" id="confirm-vinyl1">
+                <div class="selected-ring"></div>
+                <div class="vinyl-outer"></div>
+                <div class="vinyl-label"><span class="play-icon">▶</span></div>
+                <div class="check-badge">✓</div>
+              </div>
+              <span class="candidate-label">후보 1</span>
+              <span class="candidate-sub">잔잔한 어쿠스틱</span>
+            </button>
+            <button class="candidate" id="confirm-cand2" data-id="2">
+              <div class="vinyl" id="confirm-vinyl2">
+                <div class="selected-ring"></div>
+                <div class="vinyl-outer"></div>
+                <div class="vinyl-label"><span class="play-icon">▶</span></div>
+                <div class="check-badge">✓</div>
+              </div>
+              <span class="candidate-label">후보 2</span>
+              <span class="candidate-sub">경쾌한 멜로디</span>
+            </button>
+          </div>
+          <div class="spacer"></div>
+          <div class="info-row"><span class="text">눌러서 들어보시고, 마음에 드는 노래를 선택해주세요.</span></div>
+          <button class="cta-btn pending" id="confirm-confirmBtn" type="button">
+            <span>이 노래로 완성할게요</span><span aria-hidden="true">→</span>
+          </button>
+          <button class="retry-link" type="button" onclick="alert('두 곡 모두 다시 만들어달라는 요청이 접수됩니다.')">두 곡 다 마음에 안 들어요 · 다시 만들어주세요</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>© 2026 노래한장. 포트폴리오 프로토타입입니다.</footer>
+
+  <div class="jump-buttons">
+    <button id="jumpUp" type="button" aria-label="이전 섹션으로 이동" onclick="moveSection(-1)">↑</button>
+    <button id="jumpDown" type="button" aria-label="다음 섹션으로 이동" onclick="moveSection(1)">↓</button>
+  </div>
+
+  <script>
+    (function(){
+      const input = document.getElementById('home-photoInput');
+      const preview = document.getElementById('home-photoPreview');
+      const label = document.getElementById('home-photoBtnLabel');
+      const hint = document.getElementById('home-hintText');
+      const nextBtn = document.getElementById('home-nextBtn');
+      input.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+        label.textContent = '다시 고르기';
+        hint.textContent = '좋은 사진이에요. 아래에서 계속 진행해주세요.';
+        nextBtn.classList.remove('pending');
+      });
+      nextBtn.addEventListener('click', () => {
+        if (nextBtn.classList.contains('pending')) return;
+        document.getElementById('screen-lyrics').scrollIntoView({behavior:'smooth'});
+      });
+    })();
+
+    (function(){
+      let selectedId = null;
+      let playingId = null;
+      function setPlaying(id){
+        document.querySelectorAll('#screen-confirm .vinyl').forEach(v => v.classList.remove('playing'));
+        document.querySelectorAll('#screen-confirm .play-icon').forEach(i => i.textContent = '▶');
+        if (id){
+          const v = document.getElementById('confirm-vinyl' + id);
+          v.classList.add('playing');
+          v.querySelector('.play-icon').textContent = '❚❚';
+        }
+      }
+      function selectCandidate(id){
+        selectedId = id;
+        document.querySelectorAll('#screen-confirm .candidate').forEach(c => {
+          c.classList.toggle('selected', c.dataset.id === String(id));
+        });
+        document.getElementById('confirm-confirmBtn').classList.remove('pending');
+      }
+      document.getElementById('confirm-cand1').addEventListener('click', () => {
+        playingId = playingId === 1 ? null : 1;
+        setPlaying(playingId);
+        selectCandidate(1);
+      });
+      document.getElementById('confirm-cand2').addEventListener('click', () => {
+        playingId = playingId === 2 ? null : 2;
+        setPlaying(playingId);
+        selectCandidate(2);
+      });
+      document.getElementById('confirm-confirmBtn').addEventListener('click', () => {
+        if (!selectedId) return;
+        alert('후보 ' + selectedId + '번이 완성곡으로 확정됩니다. 곧 굿즈 제작이 시작돼요.');
+      });
+    })();
+
+    (function(){
+      const sectionIds = ['hero','process','screen-home','screen-lyrics','screen-confirm'];
+      const upBtn = document.getElementById('jumpUp');
+      const downBtn = document.getElementById('jumpDown');
+      function currentIndex(){
+        let idx = 0;
+        sectionIds.forEach((id, i) => {
+          const el = document.getElementById(id);
+          if (el.getBoundingClientRect().top <= window.innerHeight / 2) idx = i;
+        });
+        return idx;
+      }
+      function updateButtons(){
+        const idx = currentIndex();
+        upBtn.style.visibility = idx === 0 ? 'hidden' : 'visible';
+        downBtn.style.visibility = idx === sectionIds.length - 1 ? 'hidden' : 'visible';
+      }
+      window.moveSection = function(dir){
+        let idx = currentIndex() + dir;
+        idx = Math.max(0, Math.min(sectionIds.length - 1, idx));
+        document.getElementById(sectionIds[idx]).scrollIntoView({behavior:'smooth'});
+        setTimeout(updateButtons, 600);
+      };
+      window.addEventListener('scroll', updateButtons);
+      window.addEventListener('load', updateButtons);
+    })();
+  </script>
+
+</body>
+</html>
